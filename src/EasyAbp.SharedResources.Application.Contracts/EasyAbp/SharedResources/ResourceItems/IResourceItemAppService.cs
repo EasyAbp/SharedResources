@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using EasyAbp.SharedResources.ResourceItems.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -9,10 +10,9 @@ namespace EasyAbp.SharedResources.ResourceItems
         ICrudAppService< 
             ResourceItemDto, 
             Guid, 
-            PagedAndSortedResultRequestDto,
+            GetResourceItemListDto,
             CreateUpdateResourceItemDto,
             CreateUpdateResourceItemDto>
     {
-
     }
 }

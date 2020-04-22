@@ -14,7 +14,9 @@ $(function () {
         autoWidth: false,
         scrollCollapse: true,
         order: [[1, "asc"]],
-        ajax: abp.libs.datatables.createAjax(service.getList),
+        ajax: abp.libs.datatables.createAjax(service.getList, function () {
+            return { ownerUserId: ownerUserId, rootCategoryId: rootCategoryId };
+        }),
         columnDefs: [
             {
                 rowAction: {
@@ -64,6 +66,6 @@ $(function () {
 
     $('#NewCategoryButton').click(function (e) {
         e.preventDefault();
-        createModal.open();
+        createModal.open({ ownerUserId: ownerUserId, parentCategoryId: rootCategoryId });
     });
 });

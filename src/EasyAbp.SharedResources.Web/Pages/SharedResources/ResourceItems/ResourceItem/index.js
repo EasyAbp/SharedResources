@@ -14,7 +14,9 @@ $(function () {
         autoWidth: false,
         scrollCollapse: true,
         order: [[1, "asc"]],
-        ajax: abp.libs.datatables.createAjax(service.getList),
+        ajax: abp.libs.datatables.createAjax(service.getList, function () {
+            return { resourceId: resourceId };
+        }),
         columnDefs: [
             {
                 rowAction: {
@@ -60,6 +62,6 @@ $(function () {
 
     $('#NewResourceItemButton').click(function (e) {
         e.preventDefault();
-        createModal.open();
+        createModal.open({ resourceId: resourceId });
     });
 });

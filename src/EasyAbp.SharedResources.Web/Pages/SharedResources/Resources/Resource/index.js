@@ -14,12 +14,26 @@ $(function () {
         autoWidth: false,
         scrollCollapse: true,
         order: [[1, "asc"]],
-        ajax: abp.libs.datatables.createAjax(service.getList),
+        ajax: abp.libs.datatables.createAjax(service.getList, function () {
+            return { ownerUserId: ownerUserId, categoryId: categoryId };
+        }),
         columnDefs: [
             {
                 rowAction: {
                     items:
                         [
+                            {
+                                text: l('ResourceItem'),
+                                action: function (data) {
+                                    document.location.href = document.location.origin + '/SharedResources/ResourceItems/ResourceItem?ResourceId=' + data.record.id;
+                                }
+                            },
+                            {
+                                text: l('ResourceUser'),
+                                action: function (data) {
+                                    document.location.href = document.location.origin + '/SharedResources/ResourceUsers/ResourceUser?ResourceId=' + data.record.id;
+                                }
+                            },
                             {
                                 text: l('Edit'),
                                 action: function (data) {
@@ -61,6 +75,6 @@ $(function () {
 
     $('#NewResourceButton').click(function (e) {
         e.preventDefault();
-        createModal.open();
+        createModal.open({ ownerUserId: ownerUserId, categoryId: categoryId });
     });
 });

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using EasyAbp.SharedResources.Authorization;
 using EasyAbp.SharedResources.Categories.Dtos;
 using Volo.Abp.Application.Dtos;
@@ -6,7 +7,7 @@ using Volo.Abp.Application.Services;
 
 namespace EasyAbp.SharedResources.Categories
 {
-    public class CategoryAppService : CrudAppService<Category, CategoryDto, Guid, PagedAndSortedResultRequestDto, CreateUpdateCategoryDto, CreateUpdateCategoryDto>,
+    public class CategoryAppService : CrudAppService<Category, CategoryDto, Guid, GetCategoryListDto, CreateUpdateCategoryDto, CreateUpdateCategoryDto>,
         ICategoryAppService
     {
         protected override string CreatePolicyName { get; set; } = SharedResourcesPermissions.Categories.Create;
@@ -20,6 +21,12 @@ namespace EasyAbp.SharedResources.Categories
         public CategoryAppService(ICategoryRepository repository) : base(repository)
         {
             _repository = repository;
+        }
+
+        protected override IQueryable<Category> CreateFilteredQuery(GetCategoryListDto input)
+        {
+            return base.CreateFilteredQuery(input).Where(x =>
+                x.ParentCategoryId == input.RootCategoryId && x.OwnerUserId == input.OwnerUserId);
         }
     }
 }

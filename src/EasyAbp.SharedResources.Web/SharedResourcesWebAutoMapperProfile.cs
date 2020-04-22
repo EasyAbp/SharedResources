@@ -3,6 +3,10 @@ using EasyAbp.SharedResources.Resources.Dtos;
 using EasyAbp.SharedResources.ResourceItems.Dtos;
 using EasyAbp.SharedResources.ResourceUsers.Dtos;
 using AutoMapper;
+using EasyAbp.SharedResources.Web.Pages.SharedResources.Categories.Category.ViewModels;
+using EasyAbp.SharedResources.Web.Pages.SharedResources.ResourceItems.ResourceItem.ViewModels;
+using EasyAbp.SharedResources.Web.Pages.SharedResources.Resources.Resource.ViewModels;
+using EasyAbp.SharedResources.Web.Pages.SharedResources.ResourceUsers.ResourceUser.ViewModels;
 
 namespace EasyAbp.SharedResources.Web
 {
@@ -13,10 +17,16 @@ namespace EasyAbp.SharedResources.Web
             /* You can configure your AutoMapper mapping configuration here.
              * Alternatively, you can split your mapping configurations
              * into multiple profile classes for a better organization. */
-            CreateMap<CategoryDto, CreateUpdateCategoryDto>();
-            CreateMap<ResourceDto, CreateUpdateResourceDto>();
-            CreateMap<ResourceItemDto, CreateUpdateResourceItemDto>();
-            CreateMap<ResourceUserDto, CreateUpdateResourceUserDto>();
+            CreateMap<CategoryDto, CreateEditCategoryViewModel>();
+            CreateMap<CreateEditCategoryViewModel, CreateUpdateCategoryDto>();
+            CreateMap<ResourceDto, CreateEditResourceViewModel>();
+            CreateMap<CreateEditResourceViewModel, CreateUpdateResourceDto>();
+            CreateMap<ResourceItemDto, CreateEditResourceItemViewModel>();
+            CreateMap<CreateEditResourceItemViewModel, CreateUpdateResourceItemDto>();
+            CreateMap<ResourceItemContentDto, CreateEditResourceItemContentViewModel>();
+            CreateMap<CreateEditResourceItemContentViewModel, CreateUpdateResourceItemContentDto>();
+            CreateMap<ResourceUserDto, CreateEditResourceUserViewModel>();
+            CreateMap<CreateEditResourceUserViewModel, CreateUpdateResourceUserDto>();
         }
     }
 }

@@ -9,6 +9,9 @@ namespace EasyAbp.SharedResources.Web.Pages.SharedResources.Categories.Category
         [BindProperty(SupportsGet = true)]
         public Guid? OwnerUserId { get; set; }
         
+        [BindProperty(SupportsGet = true)]
+        public Guid? RootCategoryId { get; set; }
+        
         public async Task OnGetAsync()
         {
             await Task.CompletedTask;

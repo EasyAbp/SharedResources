@@ -9,7 +9,7 @@ namespace EasyAbp.SharedResources.Categories
         ICrudAppService< 
             CategoryDto, 
             Guid, 
-            PagedAndSortedResultRequestDto,
+            GetCategoryListDto,
             CreateUpdateCategoryDto,
             CreateUpdateCategoryDto>
     {

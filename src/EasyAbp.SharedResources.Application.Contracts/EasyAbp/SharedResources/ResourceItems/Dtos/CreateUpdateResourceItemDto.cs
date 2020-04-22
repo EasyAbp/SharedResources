@@ -18,5 +18,7 @@ namespace EasyAbp.SharedResources.ResourceItems.Dtos
 
         [DisplayName("ResourceItemIsPublic")]
         public bool IsPublic { get; set; }
+        
+        public CreateUpdateResourceItemContentDto ResourceItemContent { get; set; }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EasyAbp.SharedResources.ResourceUsers;
@@ -15,6 +16,14 @@ namespace EasyAbp.SharedResources.Web.Pages.SharedResources.ResourceUsers.Resour
         public CreateModalModel(IResourceUserAppService service)
         {
             _service = service;
+        }
+        
+        public virtual async Task OnGetAsync(Guid resourceId)
+        {
+            ResourceUser = new CreateUpdateResourceUserDto
+            {
+                ResourceId = resourceId
+            };
         }
 
         public async Task<IActionResult> OnPostAsync()

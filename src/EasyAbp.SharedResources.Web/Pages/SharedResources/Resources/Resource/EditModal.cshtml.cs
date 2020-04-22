@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EasyAbp.SharedResources.Resources;
 using EasyAbp.SharedResources.Resources.Dtos;
+using EasyAbp.SharedResources.Web.Pages.SharedResources.Resources.Resource.ViewModels;
 
 namespace EasyAbp.SharedResources.Web.Pages.SharedResources.Resources.Resource
 {
@@ -13,7 +14,7 @@ namespace EasyAbp.SharedResources.Web.Pages.SharedResources.Resources.Resource
         public Guid Id { get; set; }
 
         [BindProperty]
-        public CreateUpdateResourceDto Resource { get; set; }
+        public CreateEditResourceViewModel Resource { get; set; }
 
         private readonly IResourceAppService _service;
 
@@ -25,12 +26,14 @@ namespace EasyAbp.SharedResources.Web.Pages.SharedResources.Resources.Resource
         public async Task OnGetAsync()
         {
             var dto = await _service.GetAsync(Id);
-            Resource = ObjectMapper.Map<ResourceDto, CreateUpdateResourceDto>(dto);
+            Resource = ObjectMapper.Map<ResourceDto, CreateEditResourceViewModel>(dto);
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            await _service.UpdateAsync(Id, Resource);
+            await _service.UpdateAsync(Id,
+                ObjectMapper.Map<CreateEditResourceViewModel, CreateUpdateResourceDto>(Resource));
+            
             return NoContent();
         }
     }

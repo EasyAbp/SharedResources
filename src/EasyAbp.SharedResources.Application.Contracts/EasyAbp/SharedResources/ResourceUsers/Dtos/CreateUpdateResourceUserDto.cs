@@ -9,8 +9,5 @@ namespace EasyAbp.SharedResources.ResourceUsers.Dtos
 
         [DisplayName("ResourceUserUserId")]
         public Guid UserId { get; set; }
-
-        [DisplayName("ResourceUserUserName")]
-        public string UserName { get; set; }
     }
 }

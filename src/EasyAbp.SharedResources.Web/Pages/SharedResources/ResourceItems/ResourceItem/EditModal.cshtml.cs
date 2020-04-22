@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using EasyAbp.SharedResources.ResourceItems;
 using EasyAbp.SharedResources.ResourceItems.Dtos;
+using EasyAbp.SharedResources.Web.Pages.SharedResources.ResourceItems.ResourceItem.ViewModels;
 
 namespace EasyAbp.SharedResources.Web.Pages.SharedResources.ResourceItems.ResourceItem
 {
@@ -13,7 +14,7 @@ namespace EasyAbp.SharedResources.Web.Pages.SharedResources.ResourceItems.Resour
         public Guid Id { get; set; }
 
         [BindProperty]
-        public CreateUpdateResourceItemDto ResourceItem { get; set; }
+        public CreateEditResourceItemViewModel ResourceItem { get; set; }
 
         private readonly IResourceItemAppService _service;
 
@@ -25,12 +26,14 @@ namespace EasyAbp.SharedResources.Web.Pages.SharedResources.ResourceItems.Resour
         public async Task OnGetAsync()
         {
             var dto = await _service.GetAsync(Id);
-            ResourceItem = ObjectMapper.Map<ResourceItemDto, CreateUpdateResourceItemDto>(dto);
+            ResourceItem = ObjectMapper.Map<ResourceItemDto, CreateEditResourceItemViewModel>(dto);
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            await _service.UpdateAsync(Id, ResourceItem);
+            await _service.UpdateAsync(Id,
+                ObjectMapper.Map<CreateEditResourceItemViewModel, CreateUpdateResourceItemDto>(ResourceItem));
+            
             return NoContent();
         }
     }

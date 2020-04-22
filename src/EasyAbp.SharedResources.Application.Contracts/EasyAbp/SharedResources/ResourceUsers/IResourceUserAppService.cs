@@ -9,7 +9,7 @@ namespace EasyAbp.SharedResources.ResourceUsers
         ICrudAppService< 
             ResourceUserDto, 
             Guid, 
-            PagedAndSortedResultRequestDto,
+            GetResourceUserListDto,
             CreateUpdateResourceUserDto,
             CreateUpdateResourceUserDto>
     {
