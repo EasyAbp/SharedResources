@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="..\..\common.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>EasyAbp.SharedResources</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="2.6.0" />
+    <ProjectReference Include="..\EasyAbp.SharedResources.Application.Contracts\EasyAbp.SharedResources.Application.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>
