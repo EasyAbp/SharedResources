@@ -22,8 +22,6 @@ namespace EasyAbp.SharedResources.ResourceItems
         protected override string CreatePolicyName { get; set; } = SharedResourcesPermissions.Resources.Create;
         protected override string DeletePolicyName { get; set; } = SharedResourcesPermissions.Resources.Delete;
         protected override string UpdatePolicyName { get; set; } = SharedResourcesPermissions.Resources.Update;
-        protected override string GetPolicyName { get; set; } = SharedResourcesPermissions.Resources.Default;
-        protected override string GetListPolicyName { get; set; } = SharedResourcesPermissions.Resources.Default;
 
         private readonly IResourceItemContentConverter _resourceItemContentConverter;
         private readonly IResourceRepository _resourceRepository;
@@ -52,47 +50,44 @@ namespace EasyAbp.SharedResources.ResourceItems
             var resourceItem = await GetEntityByIdAsync(id);
             
             var resource = await _resourceRepository.GetAsync(resourceItem.ResourceId);
-            
-            if ((!resourceItem.IsPublished || !resource.IsPublished) && !await IsCurrentUserOwnerOrAdminAsync(resource))
+
+            if ((!resourceItem.IsPublished || !resource.IsPublished) &&
+                !await IsCurrentUserOwnerOrAdminAsync(resource.OwnerUserId))
             {
                 throw new EntityNotFoundException(typeof(ResourceItem), id);
             }
 
             var dto = await MapToGetOutputDtoAsync(resourceItem);
 
-            if (resourceItem.IsPublic || await IsCurrentUserAuthorizedAsync(resource))
+            if (resourceItem.IsPublic || await IsCurrentUserAuthorizedAsync(resource.Id))
             {
                 return dto;
             }
 
-            if (!await IsCurrentUserOwnerOrAdminAsync(resource))
+            if (!await IsCurrentUserOwnerOrAdminAsync(resource.OwnerUserId))
             {
                 return RemoveResourceItemContent(dto);
             }
 
-            await CheckGetPolicyAsync();
-                
             return dto;
         }
 
         public override async Task<PagedResultDto<ResourceItemDto>> GetListAsync(GetResourceItemListDto input)
         {
-            await CheckGetListPolicyAsync();
-
             var resource = await _resourceRepository.GetAsync(input.ResourceId);
             
-            if (!resource.IsPublished && !await IsCurrentUserOwnerOrAdminAsync(resource))
+            if (!resource.IsPublished && !await IsCurrentUserOwnerOrAdminAsync(resource.OwnerUserId))
             {
                 throw new EntityNotFoundException(typeof(Resource), input.ResourceId);
             }
 
             var query = CreateFilteredQuery(input);
 
-            if (!await IsCurrentUserOwnerOrAdminAsync(resource))
+            if (!await IsCurrentUserOwnerOrAdminAsync(resource.OwnerUserId))
             {
                 query = query.Where(x => x.IsPublished);
                 
-                if (!await IsCurrentUserAuthorizedAsync(resource))
+                if (!await IsCurrentUserAuthorizedAsync(resource.Id))
                 {
                     query = query.Where(x => x.IsPublic);
                 }
@@ -151,7 +146,7 @@ namespace EasyAbp.SharedResources.ResourceItems
         {
             var resource = await _resourceRepository.GetAsync(resourceId);
 
-            if (!await IsCurrentUserOwnerOrAdminAsync(resource))
+            if (!await IsCurrentUserOwnerOrAdminAsync(resource.OwnerUserId))
             {
                 throw new EntityNotFoundException(typeof(Resource), resource.Id);
             }
@@ -182,22 +177,22 @@ namespace EasyAbp.SharedResources.ResourceItems
             return result;
         }
 
-        private static ResourceItemDto RemoveResourceItemContent(ResourceItemDto dto)
+        protected virtual ResourceItemDto RemoveResourceItemContent(ResourceItemDto dto)
         {
             dto.ResourceItemContent = null;
             
             return dto;
         }
 
-        private async Task<bool> IsCurrentUserAuthorizedAsync(Resource resource)
+        protected virtual async Task<bool> IsCurrentUserAuthorizedAsync(Guid resourceId)
         {
             return CurrentUser.Id.HasValue &&
-                   await _resourceUserRepository.FindAsync(resource.Id, CurrentUser.Id.Value) != null;
+                   await _resourceUserRepository.FindAsync(resourceId, CurrentUser.Id.Value) != null;
         }
         
-        private async Task<bool> IsCurrentUserOwnerOrAdminAsync(Resource resource)
+        protected virtual async Task<bool> IsCurrentUserOwnerOrAdminAsync(Guid? resourceOwnerUserId)
         {
-            return CurrentUser.Id.HasValue && CurrentUser.Id.Value == resource.OwnerUserId ||
+            return CurrentUser.Id.HasValue && CurrentUser.Id.Value == resourceOwnerUserId ||
                    await AuthorizationService.IsGrantedAsync(SharedResourcesPermissions.Resources.GlobalManage);
         }
     }

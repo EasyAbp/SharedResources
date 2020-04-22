@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Annotations;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp.MultiTenancy;
 
@@ -12,8 +13,6 @@ namespace EasyAbp.SharedResources.ResourceUsers
         
         public virtual Guid UserId { get; protected set; }
         
-        public virtual string UserName { get; protected set; }
-
         protected ResourceUser()
         {
         }
@@ -22,14 +21,12 @@ namespace EasyAbp.SharedResources.ResourceUsers
             Guid id,
             Guid? tenantId,
             Guid resourceId,
-            Guid userId,
-            string userName
+            Guid userId
         ) :base(id)
         {
             TenantId = tenantId;
             ResourceId = resourceId;
             UserId = userId;
-            UserName = userName;
         }
     }
 }

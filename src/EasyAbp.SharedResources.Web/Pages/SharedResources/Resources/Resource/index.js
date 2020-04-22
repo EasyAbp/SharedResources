@@ -15,7 +15,7 @@ $(function () {
         scrollCollapse: true,
         order: [[1, "asc"]],
         ajax: abp.libs.datatables.createAjax(service.getList, function () {
-            return { ownerUserId: ownerUserId, categoryId: categoryId };
+            return { ownerUserId: ownerUserId, categoryId: categoryId, authorizedOnly: true };
         }),
         columnDefs: [
             {

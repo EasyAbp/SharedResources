@@ -8,6 +8,8 @@
     PageLayout.Content.Title = L["Category"].Value;
     PageLayout.Content.BreadCrumb.Add(L["Menu:Category"].Value);
     PageLayout.Content.MenuItemName = "Category";
+
+    var title = Model.RootCategoryId.HasValue ? $"{L["Category"].Value} - {Model.RootCategoryName}" : L["Category"].Value;
 }
 
 @section scripts
@@ -27,7 +29,7 @@
     <abp-card-header>
         <abp-row>
             <abp-column size-md="_6">
-                <abp-card-title>@L["Category"]</abp-card-title>
+                <abp-card-title>@title</abp-card-title>
             </abp-column>
             <abp-column size-md="_6" class="text-right">
                 <abp-button id="NewCategoryButton"

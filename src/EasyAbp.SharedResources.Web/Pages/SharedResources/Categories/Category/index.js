@@ -29,6 +29,12 @@ $(function () {
                                 }
                             },
                             {
+                                text: l('Open'),
+                                action: function (data) {
+                                    document.location.href = document.location.origin + '/SharedResources/Categories/Category?OwnerUserId=' + ownerUserId + '&RootCategoryId=' + data.record.id;
+                                }
+                            },
+                            {
                                 text: l('Edit'),
                                 action: function (data) {
                                     editModal.open({ id: data.record.id });

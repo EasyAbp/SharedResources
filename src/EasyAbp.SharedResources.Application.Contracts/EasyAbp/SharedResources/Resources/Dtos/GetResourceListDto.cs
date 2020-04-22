@@ -8,5 +8,7 @@ namespace EasyAbp.SharedResources.Resources.Dtos
         public Guid? OwnerUserId { get; set; }
         
         public Guid? CategoryId { get; set; }
+        
+        public bool AuthorizedOnly { get; set; }
     }
 }

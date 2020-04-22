@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.Ddd.Domain" Version="2.6.0" />
+    <PackageReference Include="Volo.Abp.Users.Abstractions" Version="2.6.0" />
     <ProjectReference Include="..\EasyAbp.SharedResources.Domain.Shared\EasyAbp.SharedResources.Domain.Shared.csproj" />
   </ItemGroup>
 

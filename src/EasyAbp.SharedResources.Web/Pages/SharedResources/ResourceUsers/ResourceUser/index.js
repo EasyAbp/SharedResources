@@ -46,7 +46,6 @@ $(function () {
             },
             { data: "resourceId" },
             { data: "userId" },
-            { data: "userName" },
         ]
     }));
 
