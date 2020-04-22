@@ -11,12 +11,14 @@ namespace EasyAbp.SharedResources.ResourceItems
         
         public virtual Guid ResourceId { get; protected set; }
         
+        public virtual ResourceItemType ResourceItemType { get; protected set; }
+
         [NotNull]
         public virtual string Name { get; protected set; }
         
         [CanBeNull]
         public virtual string Description { get; protected set; }
-
+        
         public virtual bool IsPublished { get; protected set; }
         
         public virtual bool IsPublic { get; protected set; }
@@ -31,6 +33,7 @@ namespace EasyAbp.SharedResources.ResourceItems
             Guid id,
             Guid? tenantId,
             Guid resourceId,
+            ResourceItemType resourceItemType,
             string name,
             string description,
             bool isPublished,
@@ -39,6 +42,7 @@ namespace EasyAbp.SharedResources.ResourceItems
         {
             TenantId = tenantId;
             ResourceId = resourceId;
+            ResourceItemType = resourceItemType;
             Name = name;
             Description = description;
             IsPublished = isPublished;

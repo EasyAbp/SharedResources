@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using EasyAbp.SharedResources.ResourceItems;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyAbp.SharedResources.Web.Pages.SharedResources.ResourceItems.ResourceItem.ViewModels
@@ -10,6 +11,9 @@ namespace EasyAbp.SharedResources.Web.Pages.SharedResources.ResourceItems.Resour
         [Display(Name = "Resource")]
         public Guid ResourceId { get; set; }
 
+        [Display(Name = "ResourceItemType")]
+        public ResourceItemType ResourceItemType { get; set; }
+        
         [Display(Name = "ResourceItemName")]
         public string Name { get; set; }
 

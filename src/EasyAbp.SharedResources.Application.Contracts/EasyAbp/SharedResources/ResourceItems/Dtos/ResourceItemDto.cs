@@ -7,6 +7,8 @@ namespace EasyAbp.SharedResources.ResourceItems.Dtos
     {
         public Guid ResourceId { get; set; }
 
+        public ResourceItemType ResourceItemType { get; set; }
+
         public string Name { get; set; }
 
         public string Description { get; set; }
