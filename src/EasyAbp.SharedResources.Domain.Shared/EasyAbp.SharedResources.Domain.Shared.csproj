@@ -4,7 +4,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>EasyAbp.SharedResources</RootNamespace>
+    <RootNamespace />
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Localization\SharedResources\*.json" />
-    <Content Remove="Localization\SharedResources\*.json" />
+    <EmbeddedResource Include="EasyAbp\SharedResources\Localization\*.json" />
+    <Content Remove="EasyAbp\SharedResources\Localization\*.json" />
   </ItemGroup>
 
 </Project>

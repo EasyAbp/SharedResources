@@ -1,4 +1,19 @@
-﻿using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using EasyAbp.SharedResources.Authorization;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
+using EasyAbp.SharedResources.Localization;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
+using EasyAbp.SharedResources.Localization;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
+using EasyAbp.SharedResources.Localization;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
+using EasyAbp.SharedResources.Localization;
+using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.UI.Navigation;
 
 namespace EasyAbp.SharedResources.Web
@@ -13,11 +28,32 @@ namespace EasyAbp.SharedResources.Web
             }
         }
 
-        private Task ConfigureMainMenu(MenuConfigurationContext context)
+        private async Task ConfigureMainMenu(MenuConfigurationContext context)
         {
-            //Add main menu items.
+            var l = context.ServiceProvider.GetRequiredService<IStringLocalizer<SharedResourcesResource>>();            //Add main menu items.
 
-            return Task.CompletedTask;
+            var authorizationService = context.ServiceProvider.GetRequiredService<IAuthorizationService>();
+
+            var sharedResourcesMenuItem = new ApplicationMenuItem("SharedResources", l["Menu:SharedResources"]);
+
+            if (await authorizationService.IsGrantedAsync(SharedResourcesPermissions.Categories.Default))
+            {
+                sharedResourcesMenuItem.AddItem(
+                    new ApplicationMenuItem("Category", l["Menu:Category"], "/SharedResources/Categories/Category")
+                );
+            }
+
+            if (await authorizationService.IsGrantedAsync(SharedResourcesPermissions.Resources.Default))
+            {
+                sharedResourcesMenuItem.AddItem(
+                    new ApplicationMenuItem("Resource", l["Menu:Resource"], "/SharedResources/Resources/Resource")
+                );
+            }
+            
+            if (!sharedResourcesMenuItem.Items.IsNullOrEmpty())
+            {
+                context.Menu.Items.Add(sharedResourcesMenuItem);
+            }
         }
     }
 }

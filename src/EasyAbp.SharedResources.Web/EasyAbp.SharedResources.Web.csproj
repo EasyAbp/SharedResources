@@ -39,4 +39,16 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Pages\ResourceItems\ResourceItem\CreateModal.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\ResourceItems\ResourceItem\EditModal.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\ResourceItems\ResourceItem\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Resources\Resource\CreateModal.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Resources\Resource\EditModal.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\Resources\Resource\Index.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\ResourceUsers\ResourceUser\CreateModal.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\ResourceUsers\ResourceUser\EditModal.cshtml" />
+    <_ContentIncludedByDefault Remove="Pages\ResourceUsers\ResourceUser\Index.cshtml" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,49 @@
+@page
+@using EasyAbp.SharedResources.Web.Pages.SharedResources.ResourceUsers.ResourceUser
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@inherits EasyAbp.SharedResources.Web.Pages.SharedResourcesPage
+@model IndexModel
+@inject IPageLayout PageLayout
+@{
+    PageLayout.Content.Title = L["ResourceUser"].Value;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:ResourceUser"].Value);
+    PageLayout.Content.MenuItemName = "ResourceUser";
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/SharedResources/ResourceUsers/ResourceUser/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/SharedResources/ResourceUsers/ResourceUser/index.css"/>
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["ResourceUser"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-right">
+                <abp-button id="NewResourceUserButton"
+                            text="@L["CreateResourceUser"].Value"
+                            icon="plus"
+                            button-type="Primary" />
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table striped-rows="true" id="ResourceUserTable" class="nowrap">
+            <thead>
+            <tr>
+                <th>@L["Actions"]</th>
+                <th>@L["ResourceUserTenantId"]</th>
+                <th>@L["ResourceUserResourceId"]</th>
+                <th>@L["ResourceUserUserId"]</th>
+                <th>@L["ResourceUserUserName"]</th>
+            </tr>
+            </thead>
+        </abp-table>
+    </abp-card-body>
+</abp-card>

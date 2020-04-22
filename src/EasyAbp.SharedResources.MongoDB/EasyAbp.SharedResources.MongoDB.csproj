@@ -4,12 +4,16 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>EasyAbp.SharedResources</RootNamespace>
+    <RootNamespace />
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Volo.Abp.MongoDB" Version="2.6.0" />
     <ProjectReference Include="..\EasyAbp.SharedResources.Domain\EasyAbp.SharedResources.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="EasyAbp\SharedResources" />
   </ItemGroup>
 
 </Project>

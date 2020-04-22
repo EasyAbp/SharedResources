@@ -1,0 +1,51 @@
+@page
+@using EasyAbp.SharedResources.Web.Pages.SharedResources.Resources.Resource
+@using Volo.Abp.AspNetCore.Mvc.UI.Layout
+@inherits EasyAbp.SharedResources.Web.Pages.SharedResourcesPage
+@model IndexModel
+@inject IPageLayout PageLayout
+@{
+    PageLayout.Content.Title = L["Resource"].Value;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:Resource"].Value);
+    PageLayout.Content.MenuItemName = "Resource";
+}
+
+@section scripts
+{
+    <abp-script src="/Pages/SharedResources/Resources/Resource/index.js" />
+}
+@section styles
+{
+    <abp-style src="/Pages/SharedResources/Resources/Resource/index.css"/>
+}
+
+<abp-card>
+    <abp-card-header>
+        <abp-row>
+            <abp-column size-md="_6">
+                <abp-card-title>@L["Resource"]</abp-card-title>
+            </abp-column>
+            <abp-column size-md="_6" class="text-right">
+                <abp-button id="NewResourceButton"
+                            text="@L["CreateResource"].Value"
+                            icon="plus"
+                            button-type="Primary" />
+            </abp-column>
+        </abp-row>
+    </abp-card-header>
+    <abp-card-body>
+        <abp-table striped-rows="true" id="ResourceTable" class="nowrap">
+            <thead>
+            <tr>
+                <th>@L["Actions"]</th>
+                <th>@L["ResourceCategoryId"]</th>
+                <th>@L["ResourceOwnerUserId"]</th>
+                <th>@L["ResourceName"]</th>
+                <th>@L["ResourceDescription"]</th>
+                <th>@L["ResourcePreviewMediaResources"]</th>
+                <th>@L["ResourceIsPublished"]</th>
+            </tr>
+            </thead>
+        </abp-table>
+    </abp-card-body>
+</abp-card>
