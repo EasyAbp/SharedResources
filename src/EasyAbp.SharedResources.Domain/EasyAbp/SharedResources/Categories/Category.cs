@@ -10,6 +10,9 @@ namespace EasyAbp.SharedResources.Categories
         
         [NotNull]
         public virtual string Name { get; protected set; }
+        
+        [CanBeNull]
+        public virtual string CustomMark { get; protected set; }
 
         protected Category()
         {
@@ -18,11 +21,13 @@ namespace EasyAbp.SharedResources.Categories
         public Category(
             Guid id,
             Guid? parentCategoryId,
-            string name
+            [NotNull] string name,
+            [CanBeNull] string customMark
         ) :base(id)
         {
             ParentCategoryId = parentCategoryId;
             Name = name;
+            CustomMark = customMark;
         }
     }
 }

@@ -10,6 +10,6 @@ namespace EasyAbp.SharedResources.Categories.Dtos
 
         public string Name { get; set; }
         
-        public Dictionary<string, object> ExtraProperties { get; set; }
+        public string CustomMark { get; set; }
     }
 }

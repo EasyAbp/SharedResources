@@ -58,6 +58,7 @@ $(function () {
             },
             { data: "parentCategoryId" },
             { data: "name" },
+            { data: "customMark" },
         ]
     }));
 

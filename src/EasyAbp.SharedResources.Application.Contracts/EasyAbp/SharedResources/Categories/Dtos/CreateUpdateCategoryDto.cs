@@ -11,10 +11,10 @@ namespace EasyAbp.SharedResources.Categories.Dtos
         [DisplayName("CategoryName")]
         public string Name { get; set; }
         
+        [DisplayName("CategoryCustomMark")]
+        public string CustomMark { get; set; }
+        
         [DisplayName("CategorySetToCommon")]
         public bool SetToCommon { get; set; }
-        
-        [DisplayName("CategoryExtraProperties")]
-        public Dictionary<string, object> ExtraProperties { get; set; }
     }
 }
