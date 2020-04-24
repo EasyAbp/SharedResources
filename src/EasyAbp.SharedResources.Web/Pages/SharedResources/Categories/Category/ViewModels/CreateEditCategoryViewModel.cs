@@ -13,9 +13,5 @@ namespace EasyAbp.SharedResources.Web.Pages.SharedResources.Categories.Category.
 
         [Display(Name = "CategoryName")]
         public string Name { get; set; }
-
-        [HiddenInput]
-        [Display(Name = "IsCommon")]
-        public bool IsCommon { get; set; } = true;
     }
 }
