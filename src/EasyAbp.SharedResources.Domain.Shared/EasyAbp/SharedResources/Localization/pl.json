@@ -4,7 +4,7 @@
     "Menu:Category": "MenuCategory",
     "Category": "Category",
     "CategoryParentCategoryId": "CategoryParentCategoryId",
-    "IsCommon": "IsCommon",
+    "CategorySetToCommon": "CategorySetToCommon",
     "CategoryName": "CategoryName",
     "CreateCategory": "CreateCategory",
     "EditCategory": "EditCategory",

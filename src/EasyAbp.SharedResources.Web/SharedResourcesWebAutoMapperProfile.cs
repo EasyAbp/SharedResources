@@ -7,6 +7,7 @@ using EasyAbp.SharedResources.Web.Pages.SharedResources.Categories.Category.View
 using EasyAbp.SharedResources.Web.Pages.SharedResources.ResourceItems.ResourceItem.ViewModels;
 using EasyAbp.SharedResources.Web.Pages.SharedResources.Resources.Resource.ViewModels;
 using EasyAbp.SharedResources.Web.Pages.SharedResources.ResourceUsers.ResourceUser.ViewModels;
+using Volo.Abp.AutoMapper;
 
 namespace EasyAbp.SharedResources.Web
 {
@@ -17,7 +18,7 @@ namespace EasyAbp.SharedResources.Web
             /* You can configure your AutoMapper mapping configuration here.
              * Alternatively, you can split your mapping configurations
              * into multiple profile classes for a better organization. */
-            CreateMap<CategoryDto, CreateEditCategoryViewModel>();
+            CreateMap<CategoryDto, CreateEditCategoryViewModel>().Ignore(model => model.SetToCommon);
             CreateMap<CreateEditCategoryViewModel, CreateUpdateCategoryDto>();
             CreateMap<ResourceDto, CreateEditResourceViewModel>();
             CreateMap<CreateEditResourceViewModel, CreateUpdateResourceDto>();

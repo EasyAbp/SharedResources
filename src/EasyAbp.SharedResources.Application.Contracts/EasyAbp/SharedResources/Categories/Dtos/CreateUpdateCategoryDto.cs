@@ -10,7 +10,7 @@ namespace EasyAbp.SharedResources.Categories.Dtos
         [DisplayName("CategoryName")]
         public string Name { get; set; }
         
-        [DisplayName("IsCommon")]
-        public bool IsCommon { get; set; }
+        [DisplayName("CategorySetToCommon")]
+        public bool SetToCommon { get; set; }
     }
 }

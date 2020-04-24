@@ -4,10 +4,7 @@ using System.Threading.Tasks;
 using EasyAbp.SharedResources.Authorization;
 using EasyAbp.SharedResources.Categories.Dtos;
 using EasyAbp.SharedResources.CategoryOwners;
-using Microsoft.AspNetCore.Authorization;
-using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
-using Volo.Abp.Authorization;
 using Volo.Abp.Users;
 
 namespace EasyAbp.SharedResources.Categories
@@ -19,17 +16,17 @@ namespace EasyAbp.SharedResources.Categories
         protected override string DeletePolicyName { get; set; } = SharedResourcesPermissions.Categories.Delete;
         protected override string UpdatePolicyName { get; set; } = SharedResourcesPermissions.Categories.Update;
 
+        private readonly ICategoryOwnerManager _categoryOwnerManager;
         private readonly ICategoryDataPermissionProvider _categoryDataPermissionProvider;
-        private readonly ICategoryOwnerRepository _categoryOwnerRepository;
         private readonly ICategoryRepository _repository;
 
         public CategoryAppService(
+            ICategoryOwnerManager categoryOwnerManager,
             ICategoryDataPermissionProvider categoryDataPermissionProvider,
-            ICategoryOwnerRepository categoryOwnerRepository,
             ICategoryRepository repository) : base(repository)
         {
+            _categoryOwnerManager = categoryOwnerManager;
             _categoryDataPermissionProvider = categoryDataPermissionProvider;
-            _categoryOwnerRepository = categoryOwnerRepository;
             _repository = repository;
         }
 
@@ -42,11 +39,11 @@ namespace EasyAbp.SharedResources.Categories
         {
             var dto = await base.CreateAsync(input);
             
-            await AddCategoryOwnerAsync(dto.Id, CurrentUser.GetId());
+            await _categoryOwnerManager.AddCategoryOwnerAsync(dto.Id, CurrentUser.GetId());
 
-            if (input.IsCommon && await _categoryDataPermissionProvider.IsCurrentUserHasGlobalManagePermissionAsync())
+            if (input.SetToCommon && await _categoryDataPermissionProvider.IsCurrentUserHasGlobalManagePermissionAsync())
             {
-                await AddCategoryOwnerAsync(dto.Id, null);
+                await _categoryOwnerManager.AddCategoryOwnerAsync(dto.Id, null);
             }
 
             return dto;
@@ -60,9 +57,9 @@ namespace EasyAbp.SharedResources.Categories
 
             var category = await GetEntityByIdAsync(id);
 
-            if (input.IsCommon && await _categoryDataPermissionProvider.IsCurrentUserHasGlobalManagePermissionAsync())
+            if (input.SetToCommon && await _categoryDataPermissionProvider.IsCurrentUserHasGlobalManagePermissionAsync())
             {
-                await GetOrAddCategoryOwnerAsync(category.Id, null);
+                await _categoryOwnerManager.GetOrAddCategoryOwnerAsync(category.Id, null);
             }
             
             MapToEntity(input, category);
@@ -72,21 +69,6 @@ namespace EasyAbp.SharedResources.Categories
             return MapToGetOutputDto(category);
         }
 
-        private async Task<CategoryOwner> GetOrAddCategoryOwnerAsync(Guid categoryId, Guid? ownerUserId)
-        {
-            var categoryOwner =
-                await _categoryOwnerRepository.FindAsync(
-                    x => x.CategoryId == categoryId && x.OwnerUserId == ownerUserId);
-
-            return categoryOwner ?? await AddCategoryOwnerAsync(categoryId, ownerUserId);
-        }
-
-        private async Task<CategoryOwner> AddCategoryOwnerAsync(Guid categoryId, Guid? ownerUserId)
-        {
-            return await _categoryOwnerRepository.InsertAsync(new CategoryOwner(GuidGenerator.Create(), CurrentTenant.Id,
-                categoryId, ownerUserId));
-        }
-
         public override async Task DeleteAsync(Guid id)
         {
             await CheckDeletePolicyAsync();
@@ -94,6 +76,8 @@ namespace EasyAbp.SharedResources.Categories
             await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(id);
             
             await Repository.DeleteAsync(id);
+
+            await _categoryOwnerManager.RemoveAllCategoryOwnersAsync(id);
         }
     }
 }
