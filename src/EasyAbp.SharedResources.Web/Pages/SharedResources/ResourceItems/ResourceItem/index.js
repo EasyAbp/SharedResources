@@ -44,9 +44,7 @@ $(function () {
                         ]
                 }
             },
-            { data: "resourceId" },
             { data: "name" },
-            { data: "description" },
             { data: "isPublished" },
             { data: "isPublic" },
         ]

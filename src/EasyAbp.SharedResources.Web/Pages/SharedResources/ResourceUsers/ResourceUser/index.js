@@ -44,7 +44,6 @@ $(function () {
                         ]
                 }
             },
-            { data: "resourceId" },
             { data: "userId" },
         ]
     }));

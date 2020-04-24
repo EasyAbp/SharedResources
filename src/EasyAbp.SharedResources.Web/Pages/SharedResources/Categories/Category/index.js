@@ -29,7 +29,7 @@ $(function () {
                                 }
                             },
                             {
-                                text: l('Open'),
+                                text: l('SubCategory'),
                                 action: function (data) {
                                     document.location.href = document.location.origin + '/SharedResources/Categories/Category?OwnerUserId=' + ownerUserId + '&RootCategoryId=' + data.record.id;
                                 }
@@ -56,7 +56,6 @@ $(function () {
                         ]
                 }
             },
-            { data: "parentCategoryId" },
             { data: "name" },
             { data: "customMark" },
         ]

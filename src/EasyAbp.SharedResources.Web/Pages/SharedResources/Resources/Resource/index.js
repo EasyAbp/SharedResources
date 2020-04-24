@@ -56,10 +56,7 @@ $(function () {
                         ]
                 }
             },
-            { data: "categoryId" },
             { data: "name" },
-            { data: "description" },
-            { data: "previewMediaResources" },
             { data: "isPublished" },
         ]
     }));
