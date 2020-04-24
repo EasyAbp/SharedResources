@@ -23,13 +23,13 @@ namespace EasyAbp.SharedResources.Web.Pages.SharedResources.ResourceUsers.Resour
             _service = service;
         }
 
-        public async Task OnGetAsync()
+        public virtual async Task OnGetAsync()
         {
             var dto = await _service.GetAsync(Id);
             ResourceUser = ObjectMapper.Map<ResourceUserDto, CreateEditResourceUserViewModel>(dto);
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public virtual async Task<IActionResult> OnPostAsync()
         {
             await _service.UpdateAsync(Id,
                 ObjectMapper.Map<CreateEditResourceUserViewModel, CreateUpdateResourceUserDto>(ResourceUser));

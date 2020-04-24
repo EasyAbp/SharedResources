@@ -5,7 +5,7 @@ namespace EasyAbp.SharedResources.ResourceItems
 {
     public class DefaultResourceItemContentConverter : IResourceItemContentConverter, ITransientDependency
     {
-        public Task<string> GetConvertedContentAsync(string originalContent)
+        public virtual Task<string> GetConvertedContentAsync(string originalContent)
         {
             return Task.FromResult(originalContent);
         }

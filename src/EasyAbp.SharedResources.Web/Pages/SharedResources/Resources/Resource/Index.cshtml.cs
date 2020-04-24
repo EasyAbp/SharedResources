@@ -9,7 +9,7 @@ namespace EasyAbp.SharedResources.Web.Pages.SharedResources.Resources.Resource
         [BindProperty(SupportsGet = true)]
         public Guid CategoryId { get; set; }
         
-        public async Task OnGetAsync()
+        public virtual async Task OnGetAsync()
         {
             await Task.CompletedTask;
         }

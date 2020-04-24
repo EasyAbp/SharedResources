@@ -12,7 +12,7 @@ namespace EasyAbp.SharedResources.Resources
         {
         }
 
-        public IQueryable<Resource> GetUserAuthorizedOnlyQueryable(Guid userId)
+        public virtual IQueryable<Resource> GetUserAuthorizedOnlyQueryable(Guid userId)
         {
             return from resource in DbContext.Resources
                 join resourceUser in DbContext.ResourceUsers on resource.Id equals resourceUser.ResourceId

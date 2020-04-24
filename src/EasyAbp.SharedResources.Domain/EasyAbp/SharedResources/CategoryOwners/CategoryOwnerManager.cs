@@ -13,7 +13,7 @@ namespace EasyAbp.SharedResources.CategoryOwners
             _categoryOwnerRepository = categoryOwnerRepository;
         }
 
-        public async Task<CategoryOwner> FindCategoryOwnerAsync(Guid categoryId, Guid? ownerUserId)
+        public virtual async Task<CategoryOwner> FindCategoryOwnerAsync(Guid categoryId, Guid? ownerUserId)
         {
             return await _categoryOwnerRepository.FindAsync(x =>
                 x.CategoryId == categoryId && x.OwnerUserId == ownerUserId);

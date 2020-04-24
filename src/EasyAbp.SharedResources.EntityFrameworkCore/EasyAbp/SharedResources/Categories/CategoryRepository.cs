@@ -12,7 +12,7 @@ namespace EasyAbp.SharedResources.Categories
         {
         }
 
-        public IQueryable<Category> GetQueryable(Guid? ownerUserId)
+        public virtual IQueryable<Category> GetQueryable(Guid? ownerUserId)
         {
             return from category in DbContext.Categories
                 join categoryOwner in DbContext.CategoryOwners on category.Id equals categoryOwner.CategoryId

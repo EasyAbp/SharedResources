@@ -22,7 +22,7 @@ namespace EasyAbp.SharedResources.Web.Pages.SharedResources.Categories.Category
             _categoryAppService = categoryAppService;
         }
         
-        public async Task OnGetAsync()
+        public virtual async Task OnGetAsync()
         {
             if (RootCategoryId.HasValue)
             {

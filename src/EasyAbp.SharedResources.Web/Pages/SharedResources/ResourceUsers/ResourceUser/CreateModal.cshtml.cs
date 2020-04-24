@@ -27,7 +27,7 @@ namespace EasyAbp.SharedResources.Web.Pages.SharedResources.ResourceUsers.Resour
             };
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public virtual async Task<IActionResult> OnPostAsync()
         {
             await _service.CreateAsync(
                 ObjectMapper.Map<CreateEditResourceUserViewModel, CreateUpdateResourceUserDto>(ResourceUser));
