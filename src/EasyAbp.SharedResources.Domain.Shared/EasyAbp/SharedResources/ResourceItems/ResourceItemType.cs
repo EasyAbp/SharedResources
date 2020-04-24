@@ -9,6 +9,7 @@ namespace EasyAbp.SharedResources.ResourceItems
         Video = 2,
         Audio = 4,
         Picture = 8,
-        File = 16
+        File = 16,
+        Stream = 32
     }
 }
