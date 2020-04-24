@@ -5,9 +5,7 @@ namespace EasyAbp.SharedResources.Resources.Dtos
 {
     public class ResourceDto : FullAuditedEntityDto<Guid>
     {
-        public Guid? CategoryId { get; set; }
-
-        public Guid? OwnerUserId { get; set; }
+        public Guid CategoryId { get; set; }
 
         public string Name { get; set; }
 

@@ -15,7 +15,7 @@ $(function () {
         scrollCollapse: true,
         order: [[1, "asc"]],
         ajax: abp.libs.datatables.createAjax(service.getList, function () {
-            return { ownerUserId: ownerUserId, categoryId: categoryId };
+            return { categoryId: categoryId };
         }),
         columnDefs: [
             {
@@ -57,7 +57,6 @@ $(function () {
                 }
             },
             { data: "categoryId" },
-            { data: "ownerUserId" },
             { data: "name" },
             { data: "description" },
             { data: "previewMediaResources" },
@@ -75,6 +74,6 @@ $(function () {
 
     $('#NewResourceButton').click(function (e) {
         e.preventDefault();
-        createModal.open({ ownerUserId: ownerUserId, categoryId: categoryId });
+        createModal.open({ categoryId: categoryId });
     });
 });

@@ -1,4 +1,5 @@
-﻿using EasyAbp.SharedResources.ResourceUsers;
+﻿using EasyAbp.SharedResources.CategoryOwners;
+using EasyAbp.SharedResources.ResourceUsers;
 using EasyAbp.SharedResources.ResourceItems;
 using EasyAbp.SharedResources.Resources;
 using EasyAbp.SharedResources.Categories;
@@ -78,6 +79,13 @@ namespace EasyAbp.SharedResources.EntityFrameworkCore
                 b.ConfigureByConvention(); 
                 /* Configure more properties here */
                 b.HasKey(x => x.ResourceItemId);
+            });
+
+            builder.Entity<CategoryOwner>(b =>
+            {
+                b.ToTable(options.TablePrefix + "CategoryOwners", options.Schema);
+                b.ConfigureByConvention(); 
+                /* Configure more properties here */
             });
         }
     }

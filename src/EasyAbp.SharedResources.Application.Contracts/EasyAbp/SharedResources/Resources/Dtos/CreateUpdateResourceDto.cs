@@ -5,10 +5,7 @@ namespace EasyAbp.SharedResources.Resources.Dtos
     public class CreateUpdateResourceDto
     {
         [DisplayName("Category")]
-        public Guid? CategoryId { get; set; }
-
-        [DisplayName("ResourceOwnerUserId")]
-        public Guid? OwnerUserId { get; set; }
+        public Guid CategoryId { get; set; }
 
         [DisplayName("ResourceName")]
         public string Name { get; set; }

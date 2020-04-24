@@ -25,7 +25,7 @@ $(function () {
                             {
                                 text: l('Resource'),
                                 action: function (data) {
-                                    document.location.href = document.location.origin + '/SharedResources/Resources/Resource?OwnerUserId=' + ownerUserId + '&CategoryId=' + data.record.id;
+                                    document.location.href = document.location.origin + '/SharedResources/Resources/Resource?CategoryId=' + data.record.id;
                                 }
                             },
                             {
@@ -57,7 +57,6 @@ $(function () {
                 }
             },
             { data: "parentCategoryId" },
-            { data: "ownerUserId" },
             { data: "name" },
         ]
     }));
@@ -72,6 +71,6 @@ $(function () {
 
     $('#NewCategoryButton').click(function (e) {
         e.preventDefault();
-        createModal.open({ ownerUserId: ownerUserId, parentCategoryId: rootCategoryId });
+        createModal.open({ parentCategoryId: rootCategoryId });
     });
 });

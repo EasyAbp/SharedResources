@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.SharedResources.Authorization;
+using EasyAbp.SharedResources.Categories;
+using EasyAbp.SharedResources.CategoryOwners;
 using EasyAbp.SharedResources.Resources;
 using EasyAbp.SharedResources.ResourceUsers.Dtos;
 using Microsoft.AspNetCore.Authorization;
@@ -9,6 +11,7 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Authorization;
 using Volo.Abp.Domain.Entities;
+using Volo.Abp.Users;
 
 namespace EasyAbp.SharedResources.ResourceUsers
 {
@@ -21,13 +24,16 @@ namespace EasyAbp.SharedResources.ResourceUsers
         protected override string GetPolicyName { get; set; } = SharedResourcesPermissions.ResourceUsers.Default;
         protected override string GetListPolicyName { get; set; } = SharedResourcesPermissions.ResourceUsers.Default;
 
+        private readonly ICategoryDataPermissionProvider _categoryDataPermissionProvider;
         private readonly IResourceRepository _resourceRepository;
         private readonly IResourceUserRepository _repository;
 
         public ResourceUserAppService(
+            ICategoryDataPermissionProvider categoryDataPermissionProvider,
             IResourceRepository resourceRepository,
             IResourceUserRepository repository) : base(repository)
         {
+            _categoryDataPermissionProvider = categoryDataPermissionProvider;
             _resourceRepository = resourceRepository;
             _repository = repository;
         }
@@ -41,7 +47,9 @@ namespace EasyAbp.SharedResources.ResourceUsers
         {
             var dto = await base.GetAsync(id);
             
-            if (!await IsCurrentUserOwnerOrAdminAsync(dto.UserId))
+            var resource = await _resourceRepository.GetAsync(dto.ResourceId);
+
+            if (!await _categoryDataPermissionProvider.IsCurrentUserAllowedToManageAsync(resource.CategoryId))
             {
                 throw new EntityNotFoundException(typeof(ResourceUser), id);
             }
@@ -53,7 +61,7 @@ namespace EasyAbp.SharedResources.ResourceUsers
         {
             var resource = await _resourceRepository.GetAsync(input.ResourceId);
             
-            if (!await IsCurrentUserOwnerOrAdminAsync(resource.OwnerUserId))
+            if (!await _categoryDataPermissionProvider.IsCurrentUserAllowedToManageAsync(resource.CategoryId))
             {
                 throw new EntityNotFoundException(typeof(Resource), input.ResourceId);
             }
@@ -65,7 +73,7 @@ namespace EasyAbp.SharedResources.ResourceUsers
         {
             var resource = await _resourceRepository.GetAsync(input.ResourceId);
             
-            await CheckCurrentUserAllowedToModifyAsync(resource.OwnerUserId);
+            await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(resource.CategoryId);
             
             return await base.CreateAsync(input);
         }
@@ -74,7 +82,7 @@ namespace EasyAbp.SharedResources.ResourceUsers
         {
             var resource = await _resourceRepository.GetAsync(input.ResourceId);
 
-            await CheckCurrentUserAllowedToModifyAsync(resource.OwnerUserId);
+            await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(resource.CategoryId);
             
             return await base.UpdateAsync(id, input);
         }
@@ -85,23 +93,9 @@ namespace EasyAbp.SharedResources.ResourceUsers
             
             var resource = await _resourceRepository.GetAsync(resourceUser.ResourceId);
 
-            await CheckCurrentUserAllowedToModifyAsync(resource.OwnerUserId);
+            await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(resource.CategoryId);
 
             await base.DeleteAsync(id);
-        }
-
-        protected virtual async Task CheckCurrentUserAllowedToModifyAsync(Guid? resourceOwnerUserId)
-        {
-            if (!await IsCurrentUserOwnerOrAdminAsync(resourceOwnerUserId))
-            {
-                throw new AbpAuthorizationException();
-            }
-        }
-        
-        protected virtual async Task<bool> IsCurrentUserOwnerOrAdminAsync(Guid? resourceOwnerUserId)
-        {
-            return CurrentUser.Id.HasValue && CurrentUser.Id.Value == resourceOwnerUserId ||
-                   await AuthorizationService.IsGrantedAsync(SharedResourcesPermissions.ResourceUsers.GlobalManage);
         }
     }
 }

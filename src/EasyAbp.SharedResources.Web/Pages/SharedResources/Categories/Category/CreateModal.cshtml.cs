@@ -19,11 +19,10 @@ namespace EasyAbp.SharedResources.Web.Pages.SharedResources.Categories.Category
             _service = service;
         }
 
-        public virtual async Task OnGetAsync(Guid? ownerUserId, Guid? parentCategoryId)
+        public virtual async Task OnGetAsync(Guid? parentCategoryId)
         {
             Category = new CreateEditCategoryViewModel
             {
-                OwnerUserId = ownerUserId,
                 ParentCategoryId = parentCategoryId
             };
         }

@@ -1,4 +1,5 @@
-﻿using EasyAbp.SharedResources.ResourceUsers;
+﻿using EasyAbp.SharedResources.CategoryOwners;
+using EasyAbp.SharedResources.ResourceUsers;
 using EasyAbp.SharedResources.ResourceItems;
 using EasyAbp.SharedResources.Resources;
 using EasyAbp.SharedResources.Categories;
@@ -25,6 +26,7 @@ namespace EasyAbp.SharedResources.EntityFrameworkCore
                 options.AddRepository<Resource, ResourceRepository>();
                 options.AddRepository<ResourceItem, ResourceItemRepository>();
                 options.AddRepository<ResourceUser, ResourceUserRepository>();
+                options.AddRepository<CategoryOwner, CategoryOwnerRepository>();
             });
         }
     }

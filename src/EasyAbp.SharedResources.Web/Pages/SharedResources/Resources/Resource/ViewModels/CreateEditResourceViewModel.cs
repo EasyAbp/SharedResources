@@ -9,11 +9,7 @@ namespace EasyAbp.SharedResources.Web.Pages.SharedResources.Resources.Resource.V
     {
         [HiddenInput]
         [Display(Name = "Category")]
-        public Guid? CategoryId { get; set; }
-
-        [HiddenInput]
-        [Display(Name = "ResourceOwnerUserId")]
-        public Guid? OwnerUserId { get; set; }
+        public Guid CategoryId { get; set; }
 
         [Display(Name = "ResourceName")]
         public string Name { get; set; }

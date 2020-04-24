@@ -11,11 +11,11 @@ namespace EasyAbp.SharedResources.Web.Pages.SharedResources.Categories.Category.
         [Display(Name = "CategoryParentCategoryId")]
         public Guid? ParentCategoryId { get; set; }
 
-        [HiddenInput]
-        [Display(Name = "CategoryOwnerUserId")]
-        public Guid? OwnerUserId { get; set; }
-
         [Display(Name = "CategoryName")]
         public string Name { get; set; }
+
+        [HiddenInput]
+        [Display(Name = "IsCommon")]
+        public bool IsCommon { get; set; } = true;
     }
 }

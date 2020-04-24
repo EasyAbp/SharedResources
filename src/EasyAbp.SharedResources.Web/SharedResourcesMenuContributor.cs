@@ -42,13 +42,6 @@ namespace EasyAbp.SharedResources.Web
                     new ApplicationMenuItem("Category", l["Menu:Category"], "/SharedResources/Categories/Category")
                 );
             }
-
-            if (await authorizationService.IsGrantedAsync(SharedResourcesPermissions.Resources.Default))
-            {
-                sharedResourcesMenuItem.AddItem(
-                    new ApplicationMenuItem("Resource", l["Menu:Resource"], "/SharedResources/Resources/Resource")
-                );
-            }
             
             if (!sharedResourcesMenuItem.Items.IsNullOrEmpty())
             {

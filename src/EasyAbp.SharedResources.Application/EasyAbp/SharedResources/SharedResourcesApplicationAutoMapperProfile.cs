@@ -7,6 +7,7 @@ using EasyAbp.SharedResources.ResourceItems.Dtos;
 using EasyAbp.SharedResources.ResourceUsers;
 using EasyAbp.SharedResources.ResourceUsers.Dtos;
 using AutoMapper;
+using Volo.Abp.AutoMapper;
 
 namespace EasyAbp.SharedResources
 {
@@ -17,8 +18,9 @@ namespace EasyAbp.SharedResources
             /* You can configure your AutoMapper mapping configuration here.
              * Alternatively, you can split your mapping configurations
              * into multiple profile classes for a better organization. */
-            CreateMap<Category, CategoryDto>();
-            CreateMap<CreateUpdateCategoryDto, Category>(MemberList.Source);
+            CreateMap<Category, CategoryDto>().Ignore(dto => dto.IsCommon);
+            CreateMap<CreateUpdateCategoryDto, Category>(MemberList.Source)
+                .ForSourceMember(dto => dto.IsCommon, opt => opt.DoNotValidate());
             CreateMap<Resource, ResourceDto>();
             CreateMap<CreateUpdateResourceDto, Resource>(MemberList.Source);
             CreateMap<ResourceItem, ResourceItemDto>();

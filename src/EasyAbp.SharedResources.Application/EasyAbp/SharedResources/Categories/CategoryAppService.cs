@@ -3,9 +3,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using EasyAbp.SharedResources.Authorization;
 using EasyAbp.SharedResources.Categories.Dtos;
+using EasyAbp.SharedResources.CategoryOwners;
 using Microsoft.AspNetCore.Authorization;
+using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Authorization;
+using Volo.Abp.Users;
 
 namespace EasyAbp.SharedResources.Categories
 {
@@ -15,38 +18,51 @@ namespace EasyAbp.SharedResources.Categories
         protected override string CreatePolicyName { get; set; } = SharedResourcesPermissions.Categories.Create;
         protected override string DeletePolicyName { get; set; } = SharedResourcesPermissions.Categories.Delete;
         protected override string UpdatePolicyName { get; set; } = SharedResourcesPermissions.Categories.Update;
-        
+
+        private readonly ICategoryDataPermissionProvider _categoryDataPermissionProvider;
+        private readonly ICategoryOwnerRepository _categoryOwnerRepository;
         private readonly ICategoryRepository _repository;
 
-        public CategoryAppService(ICategoryRepository repository) : base(repository)
+        public CategoryAppService(
+            ICategoryDataPermissionProvider categoryDataPermissionProvider,
+            ICategoryOwnerRepository categoryOwnerRepository,
+            ICategoryRepository repository) : base(repository)
         {
+            _categoryDataPermissionProvider = categoryDataPermissionProvider;
+            _categoryOwnerRepository = categoryOwnerRepository;
             _repository = repository;
         }
 
         protected override IQueryable<Category> CreateFilteredQuery(GetCategoryListDto input)
         {
-            return base.CreateFilteredQuery(input).Where(x =>
-                x.ParentCategoryId == input.RootCategoryId && x.OwnerUserId == input.OwnerUserId);
+            return _repository.GetQueryable(input.OwnerUserId).Where(x => x.ParentCategoryId == input.RootCategoryId);
         }
 
         public override async Task<CategoryDto> CreateAsync(CreateUpdateCategoryDto input)
         {
-            await CheckCurrentUserAllowedToModifyAsync(input.OwnerUserId);
+            var dto = await base.CreateAsync(input);
             
-            return await base.CreateAsync(input);
+            await AddCategoryOwnerAsync(dto.Id, CurrentUser.GetId());
+
+            if (input.IsCommon && await _categoryDataPermissionProvider.IsCurrentUserHasGlobalManagePermissionAsync())
+            {
+                await AddCategoryOwnerAsync(dto.Id, null);
+            }
+
+            return dto;
         }
-        
+
         public override async Task<CategoryDto> UpdateAsync(Guid id, CreateUpdateCategoryDto input)
         {
-            await CheckCurrentUserAllowedToModifyAsync(input.OwnerUserId);
-
             await CheckUpdatePolicyAsync();
+
+            await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(id);
 
             var category = await GetEntityByIdAsync(id);
 
-            if (category.OwnerUserId != input.OwnerUserId)
+            if (input.IsCommon && await _categoryDataPermissionProvider.IsCurrentUserHasGlobalManagePermissionAsync())
             {
-                await CheckCurrentUserAllowedToModifyAsync(category.OwnerUserId);
+                await GetOrAddCategoryOwnerAsync(category.Id, null);
             }
             
             MapToEntity(input, category);
@@ -56,27 +72,28 @@ namespace EasyAbp.SharedResources.Categories
             return MapToGetOutputDto(category);
         }
 
+        private async Task<CategoryOwner> GetOrAddCategoryOwnerAsync(Guid categoryId, Guid? ownerUserId)
+        {
+            var categoryOwner =
+                await _categoryOwnerRepository.FindAsync(
+                    x => x.CategoryId == categoryId && x.OwnerUserId == ownerUserId);
+
+            return categoryOwner ?? await AddCategoryOwnerAsync(categoryId, ownerUserId);
+        }
+
+        private async Task<CategoryOwner> AddCategoryOwnerAsync(Guid categoryId, Guid? ownerUserId)
+        {
+            return await _categoryOwnerRepository.InsertAsync(new CategoryOwner(GuidGenerator.Create(), CurrentTenant.Id,
+                categoryId, ownerUserId));
+        }
+
         public override async Task DeleteAsync(Guid id)
         {
-            var category = await GetEntityByIdAsync(id);
+            await CheckDeletePolicyAsync();
+
+            await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(id);
             
-            await CheckCurrentUserAllowedToModifyAsync(category.OwnerUserId);
-
-            await base.DeleteAsync(id);
-        }
-
-        protected virtual async Task CheckCurrentUserAllowedToModifyAsync(Guid? categoryOwnerUserId)
-        {
-            if (!await IsCurrentUserOwnerOrAdminAsync(categoryOwnerUserId))
-            {
-                throw new AbpAuthorizationException();
-            }
-        }
-        
-        protected virtual async Task<bool> IsCurrentUserOwnerOrAdminAsync(Guid? categoryOwnerUserId)
-        {
-            return CurrentUser.Id.HasValue && CurrentUser.Id.Value == categoryOwnerUserId ||
-                   await AuthorizationService.IsGrantedAsync(SharedResourcesPermissions.Categories.GlobalManage);
+            await Repository.DeleteAsync(id);
         }
     }
 }

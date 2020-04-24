@@ -5,14 +5,10 @@ using Volo.Abp.MultiTenancy;
 
 namespace EasyAbp.SharedResources.Resources
 {
-    public class Resource : FullAuditedAggregateRoot<Guid>, IMultiTenant
+    public class Resource : FullAuditedAggregateRoot<Guid>
     {
-        public virtual Guid? TenantId { get; protected set; }
+        public virtual Guid CategoryId { get; protected set; }
         
-        public virtual Guid? CategoryId { get; protected set; }
-        
-        public virtual Guid? OwnerUserId { get; protected set; }
-
         [NotNull]
         public virtual string Name { get; protected set; }
         
@@ -30,18 +26,14 @@ namespace EasyAbp.SharedResources.Resources
 
         public Resource(
             Guid id,
-            Guid? tenantId,
-            Guid? categoryId,
-            Guid? ownerUserId,
+            Guid categoryId,
             string name,
             string description,
             string previewMediaResources,
             bool isPublished
         ) :base(id)
         {
-            TenantId = tenantId;
             CategoryId = categoryId;
-            OwnerUserId = ownerUserId;
             Name = name;
             Description = description;
             PreviewMediaResources = previewMediaResources;

@@ -20,11 +20,10 @@ namespace EasyAbp.SharedResources.Web.Pages.SharedResources.Resources.Resource
             _service = service;
         }
         
-        public virtual async Task OnGetAsync(Guid? ownerUserId, Guid? categoryId)
+        public virtual async Task OnGetAsync(Guid categoryId)
         {
             Resource = new CreateEditResourceViewModel
             {
-                OwnerUserId = ownerUserId,
                 CategoryId = categoryId
             };
         }

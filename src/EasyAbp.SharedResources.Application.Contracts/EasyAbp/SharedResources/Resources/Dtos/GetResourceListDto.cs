@@ -5,9 +5,7 @@ namespace EasyAbp.SharedResources.Resources.Dtos
 {
     public class GetResourceListDto : PagedAndSortedResultRequestDto
     {
-        public Guid? OwnerUserId { get; set; }
-        
-        public Guid? CategoryId { get; set; }
+        public Guid CategoryId { get; set; }
         
         public bool AuthorizedOnly { get; set; }
     }

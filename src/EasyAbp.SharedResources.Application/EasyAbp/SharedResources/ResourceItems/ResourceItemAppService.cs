@@ -4,12 +4,15 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EasyAbp.SharedResources.Authorization;
+using EasyAbp.SharedResources.Categories;
+using EasyAbp.SharedResources.CategoryOwners;
 using EasyAbp.SharedResources.ResourceItems.Dtos;
 using EasyAbp.SharedResources.Resources;
 using EasyAbp.SharedResources.ResourceUsers;
 using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.Authorization;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Users;
 
@@ -23,17 +26,20 @@ namespace EasyAbp.SharedResources.ResourceItems
         protected override string DeletePolicyName { get; set; } = SharedResourcesPermissions.Resources.Delete;
         protected override string UpdatePolicyName { get; set; } = SharedResourcesPermissions.Resources.Update;
 
+        private readonly ICategoryDataPermissionProvider _categoryDataPermissionProvider;
         private readonly IResourceItemContentConverter _resourceItemContentConverter;
         private readonly IResourceRepository _resourceRepository;
         private readonly IResourceUserRepository _resourceUserRepository;
         private readonly IResourceItemRepository _repository;
 
         public ResourceItemAppService(
+            ICategoryDataPermissionProvider categoryDataPermissionProvider,
             IResourceItemContentConverter resourceItemContentConverter,
             IResourceRepository resourceRepository,
             IResourceUserRepository resourceUserRepository,
             IResourceItemRepository repository) : base(repository)
         {
+            _categoryDataPermissionProvider = categoryDataPermissionProvider;
             _resourceItemContentConverter = resourceItemContentConverter;
             _resourceRepository = resourceRepository;
             _resourceUserRepository = resourceUserRepository;
@@ -51,43 +57,41 @@ namespace EasyAbp.SharedResources.ResourceItems
             
             var resource = await _resourceRepository.GetAsync(resourceItem.ResourceId);
 
-            if ((!resourceItem.IsPublished || !resource.IsPublished) &&
-                !await IsCurrentUserOwnerOrAdminAsync(resource.OwnerUserId))
+            var currentUserAllowedToManage = await _categoryDataPermissionProvider.IsCurrentUserAllowedToManageAsync(resource.CategoryId);
+
+            if ((!resourceItem.IsPublished || !resource.IsPublished) && !currentUserAllowedToManage)
             {
                 throw new EntityNotFoundException(typeof(ResourceItem), id);
             }
 
             var dto = await MapToGetOutputDtoAsync(resourceItem);
 
-            if (resourceItem.IsPublic || await IsCurrentUserAuthorizedAsync(resource.Id))
+            if (resourceItem.IsPublic || currentUserAllowedToManage || await IsCurrentUserAllowedToReadAsync(resource.Id))
             {
                 return dto;
             }
-
-            if (!await IsCurrentUserOwnerOrAdminAsync(resource.OwnerUserId))
-            {
-                return RemoveResourceItemContent(dto);
-            }
-
-            return dto;
+            
+            return RemoveResourceItemContent(dto);
         }
 
         public override async Task<PagedResultDto<ResourceItemDto>> GetListAsync(GetResourceItemListDto input)
         {
             var resource = await _resourceRepository.GetAsync(input.ResourceId);
             
-            if (!resource.IsPublished && !await IsCurrentUserOwnerOrAdminAsync(resource.OwnerUserId))
+            var currentUserAllowedToManage = await _categoryDataPermissionProvider.IsCurrentUserAllowedToManageAsync(resource.CategoryId);
+
+            if (!resource.IsPublished && !currentUserAllowedToManage)
             {
                 throw new EntityNotFoundException(typeof(Resource), input.ResourceId);
             }
 
             var query = CreateFilteredQuery(input);
 
-            if (!await IsCurrentUserOwnerOrAdminAsync(resource.OwnerUserId))
+            if (!currentUserAllowedToManage)
             {
                 query = query.Where(x => x.IsPublished);
                 
-                if (!await IsCurrentUserAuthorizedAsync(resource.Id))
+                if (!await IsCurrentUserAllowedToReadAsync(resource.Id))
                 {
                     query = query.Where(x => x.IsPublic);
                 }
@@ -108,14 +112,18 @@ namespace EasyAbp.SharedResources.ResourceItems
 
         public override async Task<ResourceItemDto> CreateAsync(CreateUpdateResourceItemDto input)
         {
-            await CheckCurrentUserAllowedToModifyAsync(input.ResourceId);
+            var resource = await _resourceRepository.GetAsync(input.ResourceId);
+
+            await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(resource.CategoryId);
 
             return await base.CreateAsync(input);
         }
 
         public override async Task<ResourceItemDto> UpdateAsync(Guid id, CreateUpdateResourceItemDto input)
         {
-            await CheckCurrentUserAllowedToModifyAsync(input.ResourceId);
+            var resource = await _resourceRepository.GetAsync(input.ResourceId);
+            
+            await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(resource.CategoryId);
 
             await CheckUpdatePolicyAsync();
 
@@ -123,7 +131,9 @@ namespace EasyAbp.SharedResources.ResourceItems
 
             if (resourceItem.ResourceId != input.ResourceId)
             {
-                await CheckCurrentUserAllowedToModifyAsync(resourceItem.ResourceId);
+                var targetResource = await _resourceRepository.GetAsync(input.ResourceId);
+
+                await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(targetResource.CategoryId);
             }
             
             MapToEntity(input, resourceItem);
@@ -137,19 +147,11 @@ namespace EasyAbp.SharedResources.ResourceItems
         {
             var resourceItem = await GetEntityByIdAsync(id);
             
-            await CheckCurrentUserAllowedToModifyAsync(resourceItem.ResourceId);
+            var resource = await _resourceRepository.GetAsync(resourceItem.ResourceId);
+
+            await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(resource.CategoryId);
 
             await base.DeleteAsync(id);
-        }
-
-        protected virtual async Task CheckCurrentUserAllowedToModifyAsync(Guid resourceId)
-        {
-            var resource = await _resourceRepository.GetAsync(resourceId);
-
-            if (!await IsCurrentUserOwnerOrAdminAsync(resource.OwnerUserId))
-            {
-                throw new EntityNotFoundException(typeof(Resource), resource.Id);
-            }
         }
 
         protected virtual async Task<ResourceItemDto> MapToGetOutputDtoAsync(ResourceItem resourceItem)
@@ -184,16 +186,10 @@ namespace EasyAbp.SharedResources.ResourceItems
             return dto;
         }
 
-        protected virtual async Task<bool> IsCurrentUserAuthorizedAsync(Guid resourceId)
+        protected virtual async Task<bool> IsCurrentUserAllowedToReadAsync(Guid resourceId)
         {
             return CurrentUser.Id.HasValue &&
                    await _resourceUserRepository.FindAsync(resourceId, CurrentUser.Id.Value) != null;
-        }
-        
-        protected virtual async Task<bool> IsCurrentUserOwnerOrAdminAsync(Guid? resourceOwnerUserId)
-        {
-            return CurrentUser.Id.HasValue && CurrentUser.Id.Value == resourceOwnerUserId ||
-                   await AuthorizationService.IsGrantedAsync(SharedResourcesPermissions.Resources.GlobalManage);
         }
     }
 }

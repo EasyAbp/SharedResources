@@ -5,6 +5,7 @@ using EasyAbp.SharedResources.Categories;
 using EasyAbp.SharedResources.Resources;
 using EasyAbp.SharedResources.ResourceItems;
 using EasyAbp.SharedResources.ResourceUsers;
+using EasyAbp.SharedResources.CategoryOwners;
 
 namespace EasyAbp.SharedResources.EntityFrameworkCore
 {
@@ -19,6 +20,7 @@ namespace EasyAbp.SharedResources.EntityFrameworkCore
         public DbSet<ResourceItem> ResourceItems { get; set; }
         public DbSet<ResourceUser> ResourceUsers { get; set; }
         public DbSet<ResourceItemContent> ResourceItemContents { get; set; }
+        public DbSet<CategoryOwner> CategoryOwners { get; set; }
 
         public SharedResourcesDbContext(DbContextOptions<SharedResourcesDbContext> options) 
             : base(options)

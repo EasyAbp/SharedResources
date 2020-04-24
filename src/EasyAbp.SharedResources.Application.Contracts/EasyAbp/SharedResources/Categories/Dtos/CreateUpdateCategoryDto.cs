@@ -7,10 +7,10 @@ namespace EasyAbp.SharedResources.Categories.Dtos
         [DisplayName("CategoryParentCategoryId")]
         public Guid? ParentCategoryId { get; set; }
 
-        [DisplayName("CategoryOwnerUserId")]
-        public Guid? OwnerUserId { get; set; }
-
         [DisplayName("CategoryName")]
         public string Name { get; set; }
+        
+        [DisplayName("IsCommon")]
+        public bool IsCommon { get; set; }
     }
 }
