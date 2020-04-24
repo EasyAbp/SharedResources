@@ -6,6 +6,7 @@
     "Category": "Category",
     "CategoryParentCategoryId": "CategoryParentCategoryId",
     "CategorySetToCommon": "CategorySetToCommon",
+    "CategoryExtraProperties": "CategoryExtraProperties",
     "CategoryName": "CategoryName",
     "CreateCategory": "CreateCategory",
     "EditCategory": "EditCategory",

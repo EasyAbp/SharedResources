@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
 namespace EasyAbp.SharedResources.Categories.Dtos
@@ -8,5 +9,7 @@ namespace EasyAbp.SharedResources.Categories.Dtos
         public Guid? ParentCategoryId { get; set; }
 
         public string Name { get; set; }
+        
+        public Dictionary<string, object> ExtraProperties { get; set; }
     }
 }

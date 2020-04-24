@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 namespace EasyAbp.SharedResources.Categories.Dtos
 {
@@ -12,5 +13,8 @@ namespace EasyAbp.SharedResources.Categories.Dtos
         
         [DisplayName("CategorySetToCommon")]
         public bool SetToCommon { get; set; }
+        
+        [DisplayName("CategoryExtraProperties")]
+        public Dictionary<string, object> ExtraProperties { get; set; }
     }
 }
