@@ -8,5 +8,7 @@ namespace EasyAbp.SharedResources.Categories.Dtos
         public Guid? ParentCategoryId { get; set; }
 
         public string Name { get; set; }
+        
+        public bool IsCommon { get; set; }
     }
 }
