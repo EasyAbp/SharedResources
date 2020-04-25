@@ -11,6 +11,8 @@ namespace EasyAbp.SharedResources.Categories
 
         Task<bool> IsCommonCategoryAsync(Guid categoryId);
 
+        Task<bool> HasAnyCategoryOwnersAsync(Guid categoryId);
+
         Task<bool> IsCurrentUserOwnerAsync(Guid categoryId);
 
         Task<bool> IsCurrentUserHasGlobalManagePermissionAsync();
