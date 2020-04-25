@@ -23,19 +23,13 @@ namespace EasyAbp.SharedResources.Resources
         protected override string UpdatePolicyName { get; set; } = SharedResourcesPermissions.Resources.Update;
 
         private readonly ICategoryDataPermissionProvider _categoryDataPermissionProvider;
-        private readonly ICategoryOwnerRepository _categoryOwnerRepository;
-        private readonly IResourceUserRepository _resourceUserRepository;
         private readonly IResourceRepository _repository;
 
         public ResourceAppService(
             ICategoryDataPermissionProvider categoryDataPermissionProvider,
-            ICategoryOwnerRepository categoryOwnerRepository,
-            IResourceUserRepository resourceUserRepository,
             IResourceRepository repository) : base(repository)
         {
             _categoryDataPermissionProvider = categoryDataPermissionProvider;
-            _categoryOwnerRepository = categoryOwnerRepository;
-            _resourceUserRepository = resourceUserRepository;
             _repository = repository;
         }
 
@@ -71,6 +65,25 @@ namespace EasyAbp.SharedResources.Resources
 
             query = ApplySorting(query, input);
             query = ApplyPaging(query, input);
+
+            var resources = await AsyncQueryableExecuter.ToListAsync(query);
+
+            return new PagedResultDto<ResourceDto>(
+                totalCount,
+                resources.Select(MapToGetListOutputDto).ToList()
+            );
+        }
+        
+        public virtual async Task<PagedResultDto<ResourceDto>> GetListAuthorizedAsync(PagedAndSortedResultRequestDto input)
+        {
+            var query = _repository.GetUserAuthorizedOnlyQueryable(CurrentUser.GetId()).Where(x => x.IsPublished);
+            
+            var totalCount = await AsyncQueryableExecuter.CountAsync(query);
+
+            var getResourceListDto = input as GetResourceListDto;
+
+            query = ApplySorting(query, getResourceListDto);
+            query = ApplyPaging(query, getResourceListDto);
 
             var resources = await AsyncQueryableExecuter.ToListAsync(query);
 
