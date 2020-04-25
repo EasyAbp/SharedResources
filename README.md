@@ -66,9 +66,9 @@ An abp application module that allows users to share resources with each other.
 
 ### Paid Knowledge Market
 
-* Use [EShop](https://github.com/EasyAbp/EShop) module to sell your courses.
-* When a user buys a course, give him access to related resources.
+* Add categories with the `Set as a common category` configuration.
 * Set the free part of resource items to `Public resource item`.
+* Use [EShop](https://github.com/EasyAbp/EShop) module to sell your courses, when a user buys a course, give him access to related resources.
 
 ## Roadmap
 
