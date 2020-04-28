@@ -46,7 +46,7 @@ namespace EasyAbp.SharedResources.Categories
         
         public virtual async Task<bool> HasAnyCategoryOwnersAsync(Guid categoryId)
         {
-            return await _categoryOwnerRepository.FindAsync(x => x.CategoryId == categoryId) != null;
+            return await _categoryOwnerRepository.GetCountAsync(categoryId) != 0;
         }
 
         public virtual async Task<bool> IsCurrentUserOwnerAsync(Guid categoryId)
