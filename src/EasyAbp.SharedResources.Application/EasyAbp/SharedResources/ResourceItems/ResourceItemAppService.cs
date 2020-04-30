@@ -66,7 +66,7 @@ namespace EasyAbp.SharedResources.ResourceItems
 
             var dto = await MapToGetOutputDtoAsync(resourceItem);
 
-            if (resourceItem.IsPublic || currentUserAllowedToManage || await IsCurrentUserAllowedToReadAsync(resource.Id))
+            if (resourceItem.IsPublic || currentUserAllowedToManage || await IsCurrentUserAuthorizedToReadAsync(resource.Id))
             {
                 return dto;
             }
@@ -91,7 +91,7 @@ namespace EasyAbp.SharedResources.ResourceItems
             {
                 query = query.Where(x => x.IsPublished);
                 
-                if (!await IsCurrentUserAllowedToReadAsync(resource.Id))
+                if (!await IsCurrentUserAuthorizedToReadAsync(resource.Id))
                 {
                     query = query.Where(x => x.IsPublic);
                 }
@@ -186,7 +186,7 @@ namespace EasyAbp.SharedResources.ResourceItems
             return dto;
         }
 
-        protected virtual async Task<bool> IsCurrentUserAllowedToReadAsync(Guid resourceId)
+        protected virtual async Task<bool> IsCurrentUserAuthorizedToReadAsync(Guid resourceId)
         {
             return CurrentUser.Id.HasValue &&
                    await _resourceUserRepository.FindAsync(resourceId, CurrentUser.Id.Value) != null;
