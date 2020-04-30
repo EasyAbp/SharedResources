@@ -18,9 +18,12 @@ namespace EasyAbp.SharedResources.Web
             /* You can configure your AutoMapper mapping configuration here.
              * Alternatively, you can split your mapping configurations
              * into multiple profile classes for a better organization. */
-            CreateMap<CategoryDto, CreateEditCategoryViewModel>().Ignore(model => model.SetToCommon);
-            CreateMap<CreateEditCategoryViewModel, CreateUpdateCategoryDto>().Ignore(dto => dto.CustomMark);
-            CreateMap<ResourceDto, CreateEditResourceViewModel>();
+            CreateMap<CategoryDto, CreateEditCategoryViewModel>()
+                .Ignore(model => model.SetToCommon);
+            CreateMap<CreateEditCategoryViewModel, CreateUpdateCategoryDto>()
+                .Ignore(dto => dto.CustomMark);
+            CreateMap<ResourceDto, CreateEditResourceViewModel>()
+                .ForSourceMember(dto => dto.IsAuthorized, opt => opt.DoNotValidate());
             CreateMap<CreateEditResourceViewModel, CreateUpdateResourceDto>();
             CreateMap<ResourceItemDto, CreateEditResourceItemViewModel>();
             CreateMap<CreateEditResourceItemViewModel, CreateUpdateResourceItemDto>();

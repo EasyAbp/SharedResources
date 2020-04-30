@@ -7,5 +7,8 @@ namespace EasyAbp.SharedResources.Resources
     public interface IResourceRepository : IRepository<Resource, Guid>
     {
         IQueryable<Resource> GetUserAuthorizedOnlyQueryable(Guid userId);
+        
+        IQueryable<ResourceAuthorizationQueryModel> GetQueryableWithAuthorizationStatus(Guid userId,
+            bool getAuthorizedOnly);
     }
 }

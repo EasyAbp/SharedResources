@@ -23,23 +23,19 @@ namespace EasyAbp.SharedResources.Resources
         protected override string UpdatePolicyName { get; set; } = SharedResourcesPermissions.Resources.Update;
 
         private readonly ICategoryDataPermissionProvider _categoryDataPermissionProvider;
+        private readonly IResourceUserRepository _resourceUserRepository;
         private readonly IResourceRepository _repository;
 
         public ResourceAppService(
             ICategoryDataPermissionProvider categoryDataPermissionProvider,
+            IResourceUserRepository resourceUserRepository,
             IResourceRepository repository) : base(repository)
         {
             _categoryDataPermissionProvider = categoryDataPermissionProvider;
+            _resourceUserRepository = resourceUserRepository;
             _repository = repository;
         }
 
-        protected override IQueryable<Resource> CreateFilteredQuery(GetResourceListDto input)
-        {
-            var query = input.AuthorizedOnly ? _repository.GetUserAuthorizedOnlyQueryable(CurrentUser.GetId()) : _repository;
-
-            return query.Where(x => x.CategoryId == input.CategoryId);
-        }
-        
         public override async Task<ResourceDto> GetAsync(Guid id)
         {
             var resource = await GetEntityByIdAsync(id);
@@ -49,28 +45,37 @@ namespace EasyAbp.SharedResources.Resources
                 throw new EntityNotFoundException(typeof(Resource), id);
             }
 
-            return MapToGetOutputDto(resource);
+            var dto = MapToGetOutputDto(resource);
+
+            dto.IsAuthorized = await _resourceUserRepository.FindAsync(id, CurrentUser.GetId()) != null;
+
+            return dto;
         }
         
         public override async Task<PagedResultDto<ResourceDto>> GetListAsync(GetResourceListDto input)
         {
-            var query = CreateFilteredQuery(input);
+            var query = _repository.GetQueryableWithAuthorizationStatus(CurrentUser.GetId(), input.AuthorizedOnly)
+                .Where(x => x.Resource.CategoryId == input.CategoryId);
 
             if (!await _categoryDataPermissionProvider.IsCurrentUserAllowedToManageAsync(input.CategoryId))
             {
-                query = query.Where(x => x.IsPublished);
+                query = query.Where(x => x.Resource.IsPublished);
             }
 
             var totalCount = await AsyncQueryableExecuter.CountAsync(query);
-
-            query = ApplySorting(query, input);
-            query = ApplyPaging(query, input);
+            
+            query = query.PageBy(input);
 
             var resources = await AsyncQueryableExecuter.ToListAsync(query);
 
             return new PagedResultDto<ResourceDto>(
                 totalCount,
-                resources.Select(MapToGetListOutputDto).ToList()
+                resources.Select(x =>
+                {
+                    var dto = ObjectMapper.Map<Resource, ResourceDto>(x.Resource);
+                    dto.IsAuthorized = x.IsAuthorized;
+                    return dto;
+                }).ToList()
             );
         }
         

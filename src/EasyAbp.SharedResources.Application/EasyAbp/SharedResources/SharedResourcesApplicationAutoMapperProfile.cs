@@ -21,7 +21,8 @@ namespace EasyAbp.SharedResources
             CreateMap<Category, CategoryDto>();
             CreateMap<CreateUpdateCategoryDto, Category>(MemberList.Source)
                 .ForSourceMember(dto => dto.SetToCommon, opt => opt.DoNotValidate());
-            CreateMap<Resource, ResourceDto>();
+            CreateMap<Resource, ResourceDto>()
+                .Ignore(dto => dto.IsAuthorized);
             CreateMap<CreateUpdateResourceDto, Resource>(MemberList.Source);
             CreateMap<ResourceItem, ResourceItemDto>();
             CreateMap<CreateUpdateResourceItemDto, ResourceItem>(MemberList.Source);

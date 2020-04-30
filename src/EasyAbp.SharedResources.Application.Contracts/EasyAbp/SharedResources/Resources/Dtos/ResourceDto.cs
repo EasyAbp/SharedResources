@@ -14,5 +14,7 @@ namespace EasyAbp.SharedResources.Resources.Dtos
         public string PreviewMediaResources { get; set; }
 
         public bool IsPublished { get; set; }
+        
+        public bool IsAuthorized { get; set; }
     }
 }
