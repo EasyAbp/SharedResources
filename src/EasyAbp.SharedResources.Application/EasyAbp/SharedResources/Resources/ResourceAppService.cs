@@ -94,7 +94,12 @@ namespace EasyAbp.SharedResources.Resources
 
             return new PagedResultDto<ResourceDto>(
                 totalCount,
-                resources.Select(MapToGetListOutputDto).ToList()
+                resources.Select(x =>
+                {
+                    var dto = ObjectMapper.Map<Resource, ResourceDto>(x);
+                    dto.IsAuthorized = true;
+                    return dto;
+                }).ToList()
             );
         }
 
