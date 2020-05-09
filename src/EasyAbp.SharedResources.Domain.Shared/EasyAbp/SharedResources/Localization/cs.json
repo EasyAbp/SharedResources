@@ -17,6 +17,7 @@
     "ResourceName": "Name",
     "ResourceDescription": "Description",
     "ResourcePreviewMediaResources": "Preview media resources",
+    "ResourceExtraProperties":"Extra properties",
     "ResourceIsPublished": "Published resource",
     "CreateResource": "New",
     "EditResource": "Edit",

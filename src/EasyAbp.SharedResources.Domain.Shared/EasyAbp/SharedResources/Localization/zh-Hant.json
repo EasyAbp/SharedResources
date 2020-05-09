@@ -17,6 +17,7 @@
     "ResourceName": "名稱",
     "ResourceDescription": "描述",
     "ResourcePreviewMediaResources": "預覽媒體資源",
+    "ResourceExtraProperties":"擴展配寘",
     "ResourceIsPublished": "是否發佈",
     "CreateResource": "新建",
     "EditResource": "編輯",

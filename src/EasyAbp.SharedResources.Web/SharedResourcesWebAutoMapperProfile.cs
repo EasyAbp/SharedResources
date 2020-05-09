@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using EasyAbp.SharedResources.Categories.Dtos;
 using EasyAbp.SharedResources.Resources.Dtos;
 using EasyAbp.SharedResources.ResourceItems.Dtos;
@@ -7,6 +8,7 @@ using EasyAbp.SharedResources.Web.Pages.SharedResources.Categories.Category.View
 using EasyAbp.SharedResources.Web.Pages.SharedResources.ResourceItems.ResourceItem.ViewModels;
 using EasyAbp.SharedResources.Web.Pages.SharedResources.Resources.Resource.ViewModels;
 using EasyAbp.SharedResources.Web.Pages.SharedResources.ResourceUsers.ResourceUser.ViewModels;
+using Newtonsoft.Json;
 using Volo.Abp.AutoMapper;
 
 namespace EasyAbp.SharedResources.Web
@@ -23,8 +25,12 @@ namespace EasyAbp.SharedResources.Web
             CreateMap<CreateEditCategoryViewModel, CreateUpdateCategoryDto>()
                 .Ignore(dto => dto.CustomMark);
             CreateMap<ResourceDto, CreateEditResourceViewModel>()
-                .ForSourceMember(dto => dto.IsAuthorized, opt => opt.DoNotValidate());
-            CreateMap<CreateEditResourceViewModel, CreateUpdateResourceDto>();
+                .ForSourceMember(dto => dto.IsAuthorized, opt => opt.DoNotValidate())
+                .ForMember(model => model.ExtraProperties, opt => opt.MapFrom(src => JsonConvert.SerializeObject(src.ExtraProperties)));
+            CreateMap<CreateEditResourceViewModel, CreateUpdateResourceDto>()
+                .ForMember(dto => dto.ExtraProperties,
+                    opt => opt.MapFrom(src =>
+                        JsonConvert.DeserializeObject<Dictionary<string, object>>(src.ExtraProperties)));
             CreateMap<ResourceItemDto, CreateEditResourceItemViewModel>();
             CreateMap<CreateEditResourceItemViewModel, CreateUpdateResourceItemDto>();
             CreateMap<ResourceItemContentDto, CreateEditResourceItemContentViewModel>();

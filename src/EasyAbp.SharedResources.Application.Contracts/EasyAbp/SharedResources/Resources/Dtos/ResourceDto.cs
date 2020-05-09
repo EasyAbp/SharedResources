@@ -3,7 +3,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace EasyAbp.SharedResources.Resources.Dtos
 {
-    public class ResourceDto : FullAuditedEntityDto<Guid>
+    public class ResourceDto : ExtensibleFullAuditedEntityDto<Guid>
     {
         public Guid CategoryId { get; set; }
 
