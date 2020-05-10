@@ -90,11 +90,6 @@ namespace EasyAbp.SharedResources.ResourceItems
             if (!currentUserAllowedToManage)
             {
                 query = query.Where(x => x.IsPublished);
-                
-                if (!await IsCurrentUserAuthorizedToReadAsync(resource.Id))
-                {
-                    query = query.Where(x => x.IsPublic);
-                }
             }
 
             var totalCount = await AsyncQueryableExecuter.CountAsync(query);
