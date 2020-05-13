@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 using Volo.Abp.Application.Dtos;
 
 namespace EasyAbp.SharedResources.Categories.Dtos
@@ -8,5 +9,8 @@ namespace EasyAbp.SharedResources.Categories.Dtos
         public Guid? OwnerUserId { get; set; }
 
         public Guid? RootCategoryId { get; set; }
+        
+        [CanBeNull]
+        public string CustomMark { get; set; }
     }
 }
