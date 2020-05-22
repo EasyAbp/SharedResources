@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using EasyAbp.SharedResources.Authorization;
 using EasyAbp.SharedResources.Categories;
 using EasyAbp.SharedResources.CategoryOwners;
+using EasyAbp.SharedResources.ResourceItems;
 using EasyAbp.SharedResources.Resources.Dtos;
 using EasyAbp.SharedResources.ResourceUsers;
 using Microsoft.AspNetCore.Authorization;
@@ -23,15 +24,18 @@ namespace EasyAbp.SharedResources.Resources
         protected override string UpdatePolicyName { get; set; } = SharedResourcesPermissions.Resources.Update;
 
         private readonly ICategoryDataPermissionProvider _categoryDataPermissionProvider;
+        private readonly IResourceItemRepository _resourceItemRepository;
         private readonly IResourceUserRepository _resourceUserRepository;
         private readonly IResourceRepository _repository;
 
         public ResourceAppService(
             ICategoryDataPermissionProvider categoryDataPermissionProvider,
+            IResourceItemRepository resourceItemRepository,
             IResourceUserRepository resourceUserRepository,
             IResourceRepository repository) : base(repository)
         {
             _categoryDataPermissionProvider = categoryDataPermissionProvider;
+            _resourceItemRepository = resourceItemRepository;
             _resourceUserRepository = resourceUserRepository;
             _repository = repository;
         }
@@ -135,6 +139,10 @@ namespace EasyAbp.SharedResources.Resources
             var resource = await GetEntityByIdAsync(id);
             
             await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(resource.CategoryId);
+
+            await _resourceItemRepository.DeleteAsync(x => x.ResourceId == id, true);
+
+            await _resourceUserRepository.DeleteAsync(x => x.ResourceId == id, true);
 
             await base.DeleteAsync(id);
         }
