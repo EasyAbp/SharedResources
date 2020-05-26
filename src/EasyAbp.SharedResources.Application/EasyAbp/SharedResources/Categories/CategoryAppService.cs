@@ -32,7 +32,10 @@ namespace EasyAbp.SharedResources.Categories
 
         protected override IQueryable<Category> CreateFilteredQuery(GetCategoryListDto input)
         {
-            return _repository.GetQueryable(input.OwnerUserId).Where(x => x.ParentCategoryId == input.RootCategoryId);
+            var query = _repository.GetQueryable(input.OwnerUserId)
+                .Where(x => x.ParentCategoryId == input.RootCategoryId);
+
+            return input.CustomMark != null ? query.Where(x => x.CustomMark == input.CustomMark) : query;
         }
 
         public override async Task<CategoryDto> CreateAsync(CreateUpdateCategoryDto input)
