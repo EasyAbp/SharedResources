@@ -194,7 +194,7 @@ namespace EasyAbp.SharedResources
             });
             app.UseAuditing();
             app.UseAbpSerilogEnrichers();
-            app.UseMvcWithDefaultRouteAndArea();
+            app.UseConfiguredEndpoints();
 
             SeedData(context);
         }

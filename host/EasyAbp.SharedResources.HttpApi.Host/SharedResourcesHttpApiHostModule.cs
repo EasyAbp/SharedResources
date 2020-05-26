@@ -174,7 +174,7 @@ namespace EasyAbp.SharedResources
             });
             app.UseAuditing();
             app.UseAbpSerilogEnrichers();
-            app.UseMvcWithDefaultRouteAndArea();
+            app.UseConfiguredEndpoints();
         }
         
         private void ConfigureConventionalControllers()
