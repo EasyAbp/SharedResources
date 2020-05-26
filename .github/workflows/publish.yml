@@ -11,63 +11,63 @@ jobs:
       - uses: actions/checkout@v2
 
       # Publish
-      - name: publish SharedResources.Application.dll
+      - name: publish EasyAbp.SharedResources.Application.dll
         uses: brandedoutcast/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: src/EasyAbp.SharedResources.Application/EasyAbp.SharedResources.Application.csproj
           VERSION_FILE_PATH: common.props
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
           
-      - name: publish SharedResources.Application.Contracts.dll
+      - name: publish EasyAbp.SharedResources.Application.Contracts.dll
         uses: brandedoutcast/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: src/EasyAbp.SharedResources.Application.Contracts/EasyAbp.SharedResources.Application.Contracts.csproj
           VERSION_FILE_PATH: common.props
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
-      - name: publish SharedResources.Domain.dll
+      - name: publish EasyAbp.SharedResources.Domain.dll
         uses: brandedoutcast/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: src/EasyAbp.SharedResources.Domain/EasyAbp.SharedResources.Domain.csproj
           VERSION_FILE_PATH: common.props
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
-      - name: publish SharedResources.Domain.Shared.dll
+      - name: publish EasyAbp.SharedResources.Domain.Shared.dll
         uses: brandedoutcast/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: src/EasyAbp.SharedResources.Domain.Shared/EasyAbp.SharedResources.Domain.Shared.csproj
           VERSION_FILE_PATH: common.props
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
-      - name: publish SharedResources.EntityFrameworkCore.dll
+      - name: publish EasyAbp.SharedResources.EntityFrameworkCore.dll
         uses: brandedoutcast/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: src/EasyAbp.SharedResources.EntityFrameworkCore/EasyAbp.SharedResources.EntityFrameworkCore.csproj
           VERSION_FILE_PATH: common.props
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
-      - name: publish SharedResources.HttpApi.dll
+      - name: publish EasyAbp.SharedResources.HttpApi.dll
         uses: brandedoutcast/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: src/EasyAbp.SharedResources.HttpApi/EasyAbp.SharedResources.HttpApi.csproj
           VERSION_FILE_PATH: common.props
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
-      - name: publish SharedResources.HttpApi.Client.dll
+      - name: publish EasyAbp.SharedResources.HttpApi.Client.dll
         uses: brandedoutcast/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: src/EasyAbp.SharedResources.HttpApi.Client/EasyAbp.SharedResources.HttpApi.Client.csproj
           VERSION_FILE_PATH: common.props
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
-      - name: publish SharedResources.MongoDB.dll
+      - name: publish EasyAbp.SharedResources.MongoDB.dll
         uses: brandedoutcast/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: src/EasyAbp.SharedResources.MongoDB/EasyAbp.SharedResources.MongoDB.csproj
           VERSION_FILE_PATH: common.props
           NUGET_KEY: ${{secrets.NUGET_API_KEY}}
 
-      - name: publish SharedResources.Web.dll
+      - name: publish EasyAbp.SharedResources.Web.dll
         uses: brandedoutcast/publish-nuget@v2
         with:
           PROJECT_FILE_PATH: src/EasyAbp.SharedResources.Web/EasyAbp.SharedResources.Web.csproj
