@@ -1,4 +1,8 @@
 # SharedResources
+
+[![NuGet](https://img.shields.io/nuget/v/EasyAbp.SharedResources.Domain.Shared.svg?style=flat-square)](https://www.nuget.org/packages/EasyAbp.SharedResources.Domain.Shared)
+[![NuGet Download](https://img.shields.io/nuget/dt/EasyAbp.SharedResources.Domain.Shared.svg?style=flat-square)](https://www.nuget.org/packages/EasyAbp.SharedResources.Domain.Shared)
+
 An abp application module that allows users to share resources with each other.
 
 ## Getting Started
