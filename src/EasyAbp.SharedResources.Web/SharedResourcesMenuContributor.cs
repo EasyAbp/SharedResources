@@ -32,11 +32,9 @@ namespace EasyAbp.SharedResources.Web
         {
             var l = context.GetLocalizer<SharedResourcesResource>();            //Add main menu items.
 
-            var authorizationService = context.ServiceProvider.GetRequiredService<IAuthorizationService>();
-
             var sharedResourcesMenuItem = new ApplicationMenuItem("SharedResources", l["Menu:SharedResources"]);
 
-            if (await authorizationService.IsGrantedAsync(SharedResourcesPermissions.Categories.Default))
+            if (await context.IsGrantedAsync(SharedResourcesPermissions.Categories.Default))
             {
                 sharedResourcesMenuItem.AddItem(
                     new ApplicationMenuItem("Category", l["Menu:Category"], "/SharedResources/Categories/Category")
