@@ -30,7 +30,7 @@ namespace EasyAbp.SharedResources.Web
 
         private async Task ConfigureMainMenu(MenuConfigurationContext context)
         {
-            var l = context.ServiceProvider.GetRequiredService<IStringLocalizer<SharedResourcesResource>>();            //Add main menu items.
+            var l = context.GetLocalizer<SharedResourcesResource>();            //Add main menu items.
 
             var authorizationService = context.ServiceProvider.GetRequiredService<IAuthorizationService>();
 
