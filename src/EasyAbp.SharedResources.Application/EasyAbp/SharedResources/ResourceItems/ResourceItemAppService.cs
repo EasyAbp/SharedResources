@@ -92,12 +92,12 @@ namespace EasyAbp.SharedResources.ResourceItems
                 query = query.Where(x => x.IsPublished);
             }
 
-            var totalCount = await AsyncQueryableExecuter.CountAsync(query);
+            var totalCount = await AsyncExecuter.CountAsync(query);
 
             query = ApplySorting(query, input);
             query = ApplyPaging(query, input);
 
-            var resourceItems = await AsyncQueryableExecuter.ToListAsync(query);
+            var resourceItems = await AsyncExecuter.ToListAsync(query);
 
             return new PagedResultDto<ResourceItemDto>(
                 totalCount,

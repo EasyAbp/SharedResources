@@ -66,11 +66,11 @@ namespace EasyAbp.SharedResources.Resources
                 query = query.Where(x => x.Resource.IsPublished);
             }
 
-            var totalCount = await AsyncQueryableExecuter.CountAsync(query);
+            var totalCount = await AsyncExecuter.CountAsync(query);
             
             query = query.PageBy(input);
 
-            var resources = await AsyncQueryableExecuter.ToListAsync(query);
+            var resources = await AsyncExecuter.ToListAsync(query);
 
             return new PagedResultDto<ResourceDto>(
                 totalCount,
@@ -87,14 +87,14 @@ namespace EasyAbp.SharedResources.Resources
         {
             var query = _repository.GetUserAuthorizedOnlyQueryable(CurrentUser.GetId()).Where(x => x.IsPublished);
             
-            var totalCount = await AsyncQueryableExecuter.CountAsync(query);
+            var totalCount = await AsyncExecuter.CountAsync(query);
 
             var getResourceListDto = input as GetResourceListDto;
 
             query = ApplySorting(query, getResourceListDto);
             query = ApplyPaging(query, getResourceListDto);
 
-            var resources = await AsyncQueryableExecuter.ToListAsync(query);
+            var resources = await AsyncExecuter.ToListAsync(query);
 
             return new PagedResultDto<ResourceDto>(
                 totalCount,
