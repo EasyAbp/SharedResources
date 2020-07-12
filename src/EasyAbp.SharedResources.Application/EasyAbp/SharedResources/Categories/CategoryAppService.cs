@@ -40,16 +40,27 @@ namespace EasyAbp.SharedResources.Categories
 
         public override async Task<CategoryDto> CreateAsync(CreateUpdateCategoryDto input)
         {
-            var dto = await base.CreateAsync(input);
+            await CheckCreatePolicyAsync();
             
-            await _categoryOwnerManager.AddCategoryOwnerAsync(dto.Id, CurrentUser.GetId());
+            if (input.ParentCategoryId.HasValue)
+            {
+                await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(input.ParentCategoryId.Value);
+            }
+            
+            var category = MapToEntity(input);
+
+            TryToSetTenantId(category);
+
+            await Repository.InsertAsync(category, autoSave: true);
+
+            await _categoryOwnerManager.AddCategoryOwnerAsync(category.Id, CurrentUser.GetId());
 
             if (input.SetToCommon && await _categoryDataPermissionProvider.IsCurrentUserHasGlobalManagePermissionAsync())
             {
-                await _categoryOwnerManager.AddCategoryOwnerAsync(dto.Id, null);
+                await _categoryOwnerManager.AddCategoryOwnerAsync(category.Id, null);
             }
 
-            return dto;
+            return MapToGetOutputDto(category);
         }
 
         public override async Task<CategoryDto> UpdateAsync(Guid id, CreateUpdateCategoryDto input)
