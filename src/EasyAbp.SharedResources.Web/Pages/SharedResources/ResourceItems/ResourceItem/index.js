@@ -24,12 +24,14 @@ $(function () {
                         [
                             {
                                 text: l('Edit'),
+                                visible: abp.auth.isGranted('EasyAbp.SharedResources.Resource.Update'),
                                 action: function (data) {
                                     editModal.open({ id: data.record.id });
                                 }
                             },
                             {
                                 text: l('Delete'),
+                                visible: abp.auth.isGranted('EasyAbp.SharedResources.Resource.Delete'),
                                 confirmMessage: function (data) {
                                     return l('ResourceItemDeletionConfirmationMessage', data.record.id);
                                 },

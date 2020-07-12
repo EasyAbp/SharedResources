@@ -30,18 +30,21 @@ $(function () {
                             },
                             {
                                 text: l('ResourceUser'),
+                                visible: abp.auth.isGranted('EasyAbp.SharedResources.ResourceUser'),
                                 action: function (data) {
                                     document.location.href = document.location.origin + '/SharedResources/ResourceUsers/ResourceUser?ResourceId=' + data.record.id;
                                 }
                             },
                             {
                                 text: l('Edit'),
+                                visible: abp.auth.isGranted('EasyAbp.SharedResources.Resource.Update'),
                                 action: function (data) {
                                     editModal.open({ id: data.record.id });
                                 }
                             },
                             {
                                 text: l('Delete'),
+                                visible: abp.auth.isGranted('EasyAbp.SharedResources.Resource.Delete'),
                                 confirmMessage: function (data) {
                                     return l('ResourceDeletionConfirmationMessage', data.record.id);
                                 },

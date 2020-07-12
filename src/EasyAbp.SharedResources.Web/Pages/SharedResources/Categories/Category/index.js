@@ -24,6 +24,7 @@ $(function () {
                         [
                             {
                                 text: l('Resource'),
+                                visible: abp.auth.isGranted('EasyAbp.SharedResources.Resource'),
                                 action: function (data) {
                                     document.location.href = document.location.origin + '/SharedResources/Resources/Resource?CategoryId=' + data.record.id;
                                 }
@@ -36,12 +37,14 @@ $(function () {
                             },
                             {
                                 text: l('Edit'),
+                                visible: abp.auth.isGranted('EasyAbp.SharedResources.Category.Update'),
                                 action: function (data) {
                                     editModal.open({ id: data.record.id });
                                 }
                             },
                             {
                                 text: l('Delete'),
+                                visible: abp.auth.isGranted('EasyAbp.SharedResources.Category.Delete'),
                                 confirmMessage: function (data) {
                                     return l('CategoryDeletionConfirmationMessage', data.record.id);
                                 },

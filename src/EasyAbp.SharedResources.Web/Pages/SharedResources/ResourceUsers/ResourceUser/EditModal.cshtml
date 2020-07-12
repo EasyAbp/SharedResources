@@ -1,6 +1,8 @@
 @page
-@inherits EasyAbp.SharedResources.Web.Pages.SharedResourcesPage
+@using EasyAbp.SharedResources.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
 @using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@inject IHtmlLocalizer<SharedResourcesResource> L
 @model EasyAbp.SharedResources.Web.Pages.SharedResources.ResourceUsers.ResourceUser.EditModalModel
 @{
     Layout = null;

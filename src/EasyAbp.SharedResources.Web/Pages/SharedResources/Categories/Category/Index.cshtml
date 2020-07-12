@@ -1,8 +1,13 @@
 @page
+@using EasyAbp.SharedResources.Authorization
+@using EasyAbp.SharedResources.Localization
 @using EasyAbp.SharedResources.Web.Pages.SharedResources.Categories.Category
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.Localization
 @using Volo.Abp.AspNetCore.Mvc.UI.Layout
-@inherits EasyAbp.SharedResources.Web.Pages.SharedResourcesPage
 @model IndexModel
+@inject IAuthorizationService Authorization
+@inject IHtmlLocalizer<SharedResourcesResource> L
 @inject IPageLayout PageLayout
 @{
     PageLayout.Content.Title = L["Category"].Value;
@@ -32,10 +37,13 @@
                 <abp-card-title>@title</abp-card-title>
             </abp-column>
             <abp-column size-md="_6" class="text-right">
-                <abp-button id="NewCategoryButton"
-                            text="@L["CreateCategory"].Value"
-                            icon="plus"
-                            button-type="Primary" />
+                @if (await Authorization.IsGrantedAsync(SharedResourcesPermissions.Categories.Create))
+                {
+                    <abp-button id="NewCategoryButton"
+                                text="@L["CreateCategory"].Value"
+                                icon="plus"
+                                button-type="Primary"/>
+                }
             </abp-column>
         </abp-row>
     </abp-card-header>
