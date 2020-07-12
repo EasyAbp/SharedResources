@@ -1,6 +1,6 @@
 $(function () {
 
-    var l = abp.localization.getResource('SharedResources');
+    var l = abp.localization.getResource('EasyAbpSharedResources');
 
     var service = easyAbp.sharedResources.categories.category;
     var createModal = new abp.ModalManager(abp.appPath + 'SharedResources/Categories/Category/CreateModal');

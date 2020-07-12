@@ -2,7 +2,7 @@
 
 namespace EasyAbp.SharedResources.Localization
 {
-    [LocalizationResourceName("SharedResources")]
+    [LocalizationResourceName("EasyAbpSharedResources")]
     public class SharedResourcesResource
     {
         
