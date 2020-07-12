@@ -1,22 +1,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using EasyAbp.SharedResources.Authorization;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
 using EasyAbp.SharedResources.Localization;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
-using EasyAbp.SharedResources.Localization;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
-using EasyAbp.SharedResources.Localization;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Localization;
-using EasyAbp.SharedResources.Localization;
-using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.UI.Navigation;
 
-namespace EasyAbp.SharedResources.Web
+namespace EasyAbp.SharedResources.Web.Menus
 {
     public class SharedResourcesMenuContributor : IMenuContributor
     {
@@ -32,12 +20,12 @@ namespace EasyAbp.SharedResources.Web
         {
             var l = context.GetLocalizer<SharedResourcesResource>();            //Add main menu items.
 
-            var sharedResourcesMenuItem = new ApplicationMenuItem("EasyAbpSharedResources", l["Menu:SharedResources"]);
+            var sharedResourcesMenuItem = new ApplicationMenuItem(SharedResourcesMenus.Prefix, l["Menu:SharedResources"]);
 
             if (await context.IsGrantedAsync(SharedResourcesPermissions.Categories.Default))
             {
                 sharedResourcesMenuItem.AddItem(
-                    new ApplicationMenuItem("EasyAbpSharedResourcesCategory", l["Menu:Category"], "/SharedResources/Categories/Category")
+                    new ApplicationMenuItem(SharedResourcesMenus.Category, l["Menu:Category"], "/SharedResources/Categories/Category")
                 );
             }
             

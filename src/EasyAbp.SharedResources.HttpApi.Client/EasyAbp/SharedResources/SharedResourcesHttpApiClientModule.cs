@@ -9,7 +9,7 @@ namespace EasyAbp.SharedResources
         typeof(AbpHttpClientModule))]
     public class SharedResourcesHttpApiClientModule : AbpModule
     {
-        public const string RemoteServiceName = "SharedResources";
+        public const string RemoteServiceName = "EasyAbpSharedResources";
 
         public override void ConfigureServices(ServiceConfigurationContext context)
         {

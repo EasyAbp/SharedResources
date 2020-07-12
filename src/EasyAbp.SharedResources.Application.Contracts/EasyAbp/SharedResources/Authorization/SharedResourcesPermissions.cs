@@ -4,7 +4,7 @@ namespace EasyAbp.SharedResources.Authorization
 {
     public class SharedResourcesPermissions
     {
-        public const string GroupName = "SharedResources";
+        public const string GroupName = "EasyAbp.SharedResources";
 
         public class Categories
         {
