@@ -40,7 +40,7 @@ namespace EasyAbp.SharedResources.Web
 
             Configure<AbpVirtualFileSystemOptions>(options =>
             {
-                options.FileSets.AddEmbedded<SharedResourcesWebModule>("EasyAbp.SharedResources.Web");
+                options.FileSets.AddEmbedded<SharedResourcesWebModule>();
             });
 
             context.Services.AddAutoMapperObjectMapper<SharedResourcesWebModule>();

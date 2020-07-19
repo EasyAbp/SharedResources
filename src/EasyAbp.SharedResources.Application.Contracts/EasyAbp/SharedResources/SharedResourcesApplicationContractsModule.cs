@@ -12,12 +12,6 @@ namespace EasyAbp.SharedResources
         )]
     public class SharedResourcesApplicationContractsModule : AbpModule
     {
-        public override void ConfigureServices(ServiceConfigurationContext context)
-        {
-            Configure<AbpVirtualFileSystemOptions>(options =>
-            {
-                options.FileSets.AddEmbedded<SharedResourcesApplicationContractsModule>("EasyAbp.SharedResources");
-            });
-        }
+
     }
 }
