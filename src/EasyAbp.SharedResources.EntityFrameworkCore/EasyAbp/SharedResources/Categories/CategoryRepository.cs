@@ -6,7 +6,7 @@ using Volo.Abp.EntityFrameworkCore;
 
 namespace EasyAbp.SharedResources.Categories
 {
-    public class CategoryRepository : EfCoreRepository<SharedResourcesDbContext, Category, Guid>, ICategoryRepository
+    public class CategoryRepository : EfCoreRepository<ISharedResourcesDbContext, Category, Guid>, ICategoryRepository
     {
         public CategoryRepository(IDbContextProvider<SharedResourcesDbContext> dbContextProvider) : base(dbContextProvider)
         {

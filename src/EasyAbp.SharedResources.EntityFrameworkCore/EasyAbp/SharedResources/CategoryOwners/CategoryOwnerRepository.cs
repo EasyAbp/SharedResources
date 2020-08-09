@@ -9,7 +9,7 @@ using Volo.Abp.EntityFrameworkCore;
 
 namespace EasyAbp.SharedResources.CategoryOwners
 {
-    public class CategoryOwnerRepository : EfCoreRepository<SharedResourcesDbContext, CategoryOwner, Guid>, ICategoryOwnerRepository
+    public class CategoryOwnerRepository : EfCoreRepository<ISharedResourcesDbContext, CategoryOwner, Guid>, ICategoryOwnerRepository
     {
         public CategoryOwnerRepository(IDbContextProvider<SharedResourcesDbContext> dbContextProvider) : base(dbContextProvider)
         {

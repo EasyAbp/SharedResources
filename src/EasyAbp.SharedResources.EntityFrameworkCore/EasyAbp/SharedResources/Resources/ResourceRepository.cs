@@ -6,7 +6,7 @@ using Volo.Abp.EntityFrameworkCore;
 
 namespace EasyAbp.SharedResources.Resources
 {
-    public class ResourceRepository : EfCoreRepository<SharedResourcesDbContext, Resource, Guid>, IResourceRepository
+    public class ResourceRepository : EfCoreRepository<ISharedResourcesDbContext, Resource, Guid>, IResourceRepository
     {
         public ResourceRepository(IDbContextProvider<SharedResourcesDbContext> dbContextProvider) : base(dbContextProvider)
         {

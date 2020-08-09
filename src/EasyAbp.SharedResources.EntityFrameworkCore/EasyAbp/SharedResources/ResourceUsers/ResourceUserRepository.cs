@@ -11,7 +11,7 @@ using Volo.Abp.EntityFrameworkCore;
 
 namespace EasyAbp.SharedResources.ResourceUsers
 {
-    public class ResourceUserRepository : EfCoreRepository<SharedResourcesDbContext, ResourceUser, Guid>, IResourceUserRepository
+    public class ResourceUserRepository : EfCoreRepository<ISharedResourcesDbContext, ResourceUser, Guid>, IResourceUserRepository
     {
         public ResourceUserRepository(IDbContextProvider<SharedResourcesDbContext> dbContextProvider) : base(dbContextProvider)
         {
