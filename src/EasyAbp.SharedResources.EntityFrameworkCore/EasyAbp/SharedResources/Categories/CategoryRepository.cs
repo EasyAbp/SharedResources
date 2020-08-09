@@ -8,7 +8,7 @@ namespace EasyAbp.SharedResources.Categories
 {
     public class CategoryRepository : EfCoreRepository<ISharedResourcesDbContext, Category, Guid>, ICategoryRepository
     {
-        public CategoryRepository(IDbContextProvider<SharedResourcesDbContext> dbContextProvider) : base(dbContextProvider)
+        public CategoryRepository(IDbContextProvider<ISharedResourcesDbContext> dbContextProvider) : base(dbContextProvider)
         {
         }
 

@@ -13,7 +13,7 @@ namespace EasyAbp.SharedResources.ResourceUsers
 {
     public class ResourceUserRepository : EfCoreRepository<ISharedResourcesDbContext, ResourceUser, Guid>, IResourceUserRepository
     {
-        public ResourceUserRepository(IDbContextProvider<SharedResourcesDbContext> dbContextProvider) : base(dbContextProvider)
+        public ResourceUserRepository(IDbContextProvider<ISharedResourcesDbContext> dbContextProvider) : base(dbContextProvider)
         {
         }
 

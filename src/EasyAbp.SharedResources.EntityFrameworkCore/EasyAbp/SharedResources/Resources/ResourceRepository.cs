@@ -8,7 +8,7 @@ namespace EasyAbp.SharedResources.Resources
 {
     public class ResourceRepository : EfCoreRepository<ISharedResourcesDbContext, Resource, Guid>, IResourceRepository
     {
-        public ResourceRepository(IDbContextProvider<SharedResourcesDbContext> dbContextProvider) : base(dbContextProvider)
+        public ResourceRepository(IDbContextProvider<ISharedResourcesDbContext> dbContextProvider) : base(dbContextProvider)
         {
         }
 

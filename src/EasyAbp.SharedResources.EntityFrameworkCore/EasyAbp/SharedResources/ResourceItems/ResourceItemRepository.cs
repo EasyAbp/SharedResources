@@ -9,7 +9,7 @@ namespace EasyAbp.SharedResources.ResourceItems
 {
     public class ResourceItemRepository : EfCoreRepository<ISharedResourcesDbContext, ResourceItem, Guid>, IResourceItemRepository
     {
-        public ResourceItemRepository(IDbContextProvider<SharedResourcesDbContext> dbContextProvider) : base(dbContextProvider)
+        public ResourceItemRepository(IDbContextProvider<ISharedResourcesDbContext> dbContextProvider) : base(dbContextProvider)
         {
         }
 

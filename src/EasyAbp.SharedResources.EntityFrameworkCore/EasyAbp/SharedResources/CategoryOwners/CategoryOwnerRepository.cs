@@ -11,7 +11,7 @@ namespace EasyAbp.SharedResources.CategoryOwners
 {
     public class CategoryOwnerRepository : EfCoreRepository<ISharedResourcesDbContext, CategoryOwner, Guid>, ICategoryOwnerRepository
     {
-        public CategoryOwnerRepository(IDbContextProvider<SharedResourcesDbContext> dbContextProvider) : base(dbContextProvider)
+        public CategoryOwnerRepository(IDbContextProvider<ISharedResourcesDbContext> dbContextProvider) : base(dbContextProvider)
         {
         }
 
