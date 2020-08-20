@@ -2,38 +2,33 @@
 
 [![NuGet](https://img.shields.io/nuget/v/EasyAbp.SharedResources.Domain.Shared.svg?style=flat-square)](https://www.nuget.org/packages/EasyAbp.SharedResources.Domain.Shared)
 [![NuGet Download](https://img.shields.io/nuget/dt/EasyAbp.SharedResources.Domain.Shared.svg?style=flat-square)](https://www.nuget.org/packages/EasyAbp.SharedResources.Domain.Shared)
+[![GitHub stars](https://img.shields.io/github/stars/EasyAbp/SharedResources?style=social)](https://www.github.com/EasyAbp/SharedResources)
 
 An abp application module that allows users to share resources with each other.
 
-## Getting Started
+## Online Demo
 
-* Install with [AbpHelper](https://github.com/EasyAbp/AbpHelper.GUI)
+We have launched an online demo for this module: [https://sharedres.samples.easyabp.io](https://sharedres.samples.easyabp.io)
 
-    Coming soon.
+## Installation
 
-* Install Manually
+1. Install the following NuGet packages. ([see how](https://github.com/EasyAbp/EasyAbpGuide/blob/master/How-To.md#add-nuget-packages))
 
-    1. Install `EasyAbp.SharedResources.Application` NuGet package to `MyProject.Application` project and add `[DependsOn(SharedResourcesApplicationModule)]` attribute to the module.
+    * EasyAbp.SharedResources.Application
+    * EasyAbp.SharedResources.Application.Contracts
+    * EasyAbp.SharedResources.Domain
+    * EasyAbp.SharedResources.Domain.Shared
+    * EasyAbp.SharedResources.EntityFrameworkCore
+    * EasyAbp.SharedResources.HttpApi
+    * EasyAbp.SharedResources.HttpApi.Client
+    * (Optional) EasyAbp.SharedResources.MongoDB
+    * (Optional) EasyAbp.SharedResources.Web
 
-    1. Install `EasyAbp.SharedResources.Application.Contracts` NuGet package to `MyProject.Application.Contracts` project and add `[DependsOn(SharedResourcesApplicationContractsModule)]` attribute to the module.
+1. Add `DependsOn(typeof(SharedResourcesXxxModule))` attribute to configure the module dependencies. ([see how](https://github.com/EasyAbp/EasyAbpGuide/blob/master/How-To.md#add-module-dependencies))
 
-    1. Install `EasyAbp.SharedResources.Domain` NuGet package to `MyProject.Domain` project and add `[DependsOn(SharedResourcesDomainModule)]` attribute to the module.
+1. Add `builder.ConfigureSharedResources();` to the `OnModelCreating()` method in **MyProjectMigrationsDbContext.cs**.
 
-    1. Install `EasyAbp.SharedResources.Domain.Shared` NuGet package to `MyProject.Domain.Shared` project and add `[DependsOn(SharedResourcesDomainSharedModule)]` attribute to the module.
-
-    1. Install `EasyAbp.SharedResources.EntityFrameworkCore` NuGet package to `MyProject.EntityFrameworkCore` project and add `[DependsOn(SharedResourcesEntityFrameworkCoreModule)]` attribute to the module.
-
-    1. Install `EasyAbp.SharedResources.HttpApi` NuGet package to `MyProject.HttpApi` project and add `[DependsOn(SharedResourcesHttpApiModule)]` attribute to the module.
-
-    1. Install `EasyAbp.SharedResources.HttpApi.Client` NuGet package to `MyProject.HttpApi.Client` project and add `[DependsOn(SharedResourcesHttpApiClientModule)]` attribute to the module.
-
-    1. Install `EasyAbp.SharedResources.MongoDB` NuGet package to `MyProject.MongoDB` project and add `[DependsOn(SharedResourcesMongoDbModule)]` attribute to the module.
-
-    1. (Optional) If you need MVC UI, install `EasyAbp.SharedResources.Web` NuGet package to `MyProject.Web` project and add `[DependsOn(SharedResourcesWebModule)]` attribute to the module.
-    
-    1. Add `builder.ConfigureSharedResources();` to OnModelCreating method in `MyProjectMigrationsDbContext.cs`.
-
-    1. Add EF Core migrations and update your database. See: [ABP document](https://docs.abp.io/en/abp/latest/Tutorials/Part-1?UI=MVC#add-new-migration-update-the-database).
+1. Add EF Core migrations and update your database. See: [ABP document](https://docs.abp.io/en/abp/latest/Tutorials/Part-1?UI=MVC#add-new-migration-update-the-database).
 
 ## Usage
 
