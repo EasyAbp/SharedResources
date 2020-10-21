@@ -56,6 +56,7 @@ namespace EasyAbp.SharedResources
         typeof(AbpTenantManagementWebModule),
         typeof(AbpTenantManagementHttpApiClientModule),
         typeof(AbpFeatureManagementHttpApiClientModule),
+        typeof(AbpFeatureManagementWebModule),
         typeof(AbpPermissionManagementHttpApiClientModule),
         typeof(AbpAspNetCoreSerilogModule)
         )]
