@@ -10,6 +10,7 @@ using EasyAbp.SharedResources.Web.Pages.SharedResources.Resources.Resource.ViewM
 using EasyAbp.SharedResources.Web.Pages.SharedResources.ResourceUsers.ResourceUser.ViewModels;
 using Newtonsoft.Json;
 using Volo.Abp.AutoMapper;
+using Volo.Abp.Data;
 
 namespace EasyAbp.SharedResources.Web
 {
@@ -30,7 +31,7 @@ namespace EasyAbp.SharedResources.Web
             CreateMap<CreateEditResourceViewModel, CreateUpdateResourceDto>()
                 .ForMember(dto => dto.ExtraProperties,
                     opt => opt.MapFrom(src =>
-                        JsonConvert.DeserializeObject<Dictionary<string, object>>(src.ExtraProperties)));
+                        JsonConvert.DeserializeObject<ExtraPropertyDictionary>(src.ExtraProperties)));
             CreateMap<ResourceItemDto, CreateEditResourceItemViewModel>();
             CreateMap<CreateEditResourceItemViewModel, CreateUpdateResourceItemDto>();
             CreateMap<ResourceItemContentDto, CreateEditResourceItemContentViewModel>();

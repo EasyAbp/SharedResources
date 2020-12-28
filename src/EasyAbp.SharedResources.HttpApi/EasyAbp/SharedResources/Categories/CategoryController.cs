@@ -8,7 +8,7 @@ using Volo.Abp.Application.Dtos;
 namespace EasyAbp.SharedResources.Categories
 {
     [RemoteService(Name = "EasyAbpSharedResources")]
-    [Route("/api/sharedResources/category")]
+    [Route("/api/shared-resources/category")]
     public class CategoryController : SharedResourcesController, ICategoryAppService
     {
         private readonly ICategoryAppService _service;

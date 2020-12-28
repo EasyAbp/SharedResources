@@ -8,7 +8,7 @@ using Volo.Abp.Application.Dtos;
 namespace EasyAbp.SharedResources.ResourceItems
 {
     [RemoteService(Name = "EasyAbpSharedResources")]
-    [Route("/api/sharedResources/resourceItem")]
+    [Route("/api/shared-resources/resource-item")]
     public class ResourceItemController : SharedResourcesController, IResourceItemAppService
     {
         private readonly IResourceItemAppService _service;
