@@ -1,11 +1,11 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
+FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["host/EasyAbp.SharedResources.Web.Unified/EasyAbp.SharedResources.Web.Unified.csproj", "host/EasyAbp.SharedResources.Web.Unified/"]
 COPY ["src/EasyAbp.SharedResources.EntityFrameworkCore/EasyAbp.SharedResources.EntityFrameworkCore.csproj", "src/EasyAbp.SharedResources.EntityFrameworkCore/"]
@@ -16,6 +16,7 @@ COPY ["src/EasyAbp.SharedResources.Application/EasyAbp.SharedResources.Applicati
 COPY ["src/EasyAbp.SharedResources.Application.Contracts/EasyAbp.SharedResources.Application.Contracts.csproj", "src/EasyAbp.SharedResources.Application.Contracts/"]
 COPY ["src/EasyAbp.SharedResources.Web/EasyAbp.SharedResources.Web.csproj", "src/EasyAbp.SharedResources.Web/"]
 COPY ["src/EasyAbp.SharedResources.HttpApi/EasyAbp.SharedResources.HttpApi.csproj", "src/EasyAbp.SharedResources.HttpApi/"]
+COPY Directory.Build.props .
 RUN dotnet restore "host/EasyAbp.SharedResources.Web.Unified/EasyAbp.SharedResources.Web.Unified.csproj"
 COPY . .
 WORKDIR "/src/host/EasyAbp.SharedResources.Web.Unified"
