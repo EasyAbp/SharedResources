@@ -19,18 +19,18 @@ namespace EasyAbp.SharedResources.ResourceUsers
 
         public virtual async Task<ResourceUser> FindAsync(Guid resourceId, Guid userId, CancellationToken cancellationToken = default)
         {
-            return await GetQueryable().Where(x => x.UserId == userId && x.ResourceId == resourceId)
+            return await (await GetQueryableAsync()).Where(x => x.UserId == userId && x.ResourceId == resourceId)
                 .FirstOrDefaultAsync(cancellationToken);
         }
 
         public virtual async Task<List<ResourceUser>> GetListByResourceIdAsync(Guid resourceId, CancellationToken cancellationToken = default)
         {
-            return await GetQueryable().Where(x => x.ResourceId == resourceId).ToListAsync(cancellationToken);
+            return await (await GetQueryableAsync()).Where(x => x.ResourceId == resourceId).ToListAsync(cancellationToken);
         }
 
         public virtual async Task<List<ResourceUser>> GetListByUserIdAsync(Guid userId, CancellationToken cancellationToken = default)
         {
-            return await GetQueryable().Where(x => x.UserId == userId).ToListAsync(cancellationToken);
+            return await (await GetQueryableAsync()).Where(x => x.UserId == userId).ToListAsync(cancellationToken);
 
         }
     }

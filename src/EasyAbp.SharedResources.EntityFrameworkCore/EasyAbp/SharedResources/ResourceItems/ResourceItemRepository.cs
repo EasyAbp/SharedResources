@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using EasyAbp.SharedResources.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
@@ -13,9 +14,9 @@ namespace EasyAbp.SharedResources.ResourceItems
         {
         }
 
-        public override IQueryable<ResourceItem> WithDetails()
+        public override async Task<IQueryable<ResourceItem>> WithDetailsAsync()
         {
-            return base.WithDetails().Include(x => x.ResourceItemContent);
+            return (await base.WithDetailsAsync()).Include(x => x.ResourceItemContent);
         }
     }
 }

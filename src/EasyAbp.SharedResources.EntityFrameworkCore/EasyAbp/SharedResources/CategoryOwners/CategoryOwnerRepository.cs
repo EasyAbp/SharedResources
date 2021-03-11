@@ -17,7 +17,7 @@ namespace EasyAbp.SharedResources.CategoryOwners
 
         public async Task<long> GetCountAsync(Guid categoryId, CancellationToken cancellationToken = default)
         {
-            return await GetQueryable().Where(x => x.CategoryId == categoryId)
+            return await (await GetQueryableAsync()).Where(x => x.CategoryId == categoryId)
                 .CountAsync(cancellationToken: cancellationToken);
         }
     }
