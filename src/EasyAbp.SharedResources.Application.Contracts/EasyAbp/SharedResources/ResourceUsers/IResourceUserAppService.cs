@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using EasyAbp.SharedResources.ResourceUsers.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -13,6 +14,6 @@ namespace EasyAbp.SharedResources.ResourceUsers
             CreateUpdateResourceUserDto,
             CreateUpdateResourceUserDto>
     {
-
+        Task<ResourceUserDto> UpdateExtraPropertiesAsync(Guid id, UpdateResourceUserExtraPropertiesInput input);
     }
 }

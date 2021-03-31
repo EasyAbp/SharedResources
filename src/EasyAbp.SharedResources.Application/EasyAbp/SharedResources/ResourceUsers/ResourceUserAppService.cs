@@ -11,6 +11,7 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Authorization;
 using Volo.Abp.Domain.Entities;
+using Volo.Abp.ObjectExtending;
 using Volo.Abp.Users;
 
 namespace EasyAbp.SharedResources.ResourceUsers
@@ -85,6 +86,30 @@ namespace EasyAbp.SharedResources.ResourceUsers
             await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(resource.CategoryId);
             
             return await base.UpdateAsync(id, input);
+        }
+        
+        public virtual async Task<ResourceUserDto> UpdateExtraPropertiesAsync(Guid id, UpdateResourceUserExtraPropertiesInput input)
+        {
+            await CheckUpdateExtraPropertiesPolicyAsync();
+            
+            var resourceUser = await GetEntityByIdAsync(id);
+
+            if (resourceUser.UserId != CurrentUser.GetId() &&
+                !await AuthorizationService.IsGrantedAsync(SharedResourcesPermissions.ResourceUsers.GlobalManage))
+            {
+                throw new AbpAuthorizationException();
+            }
+            
+            input.MapExtraPropertiesTo(resourceUser);
+
+            await _repository.UpdateAsync(resourceUser, true);
+
+            return await MapToGetOutputDtoAsync(resourceUser);
+        }
+
+        protected virtual async Task CheckUpdateExtraPropertiesPolicyAsync()
+        {
+            await AuthorizationService.CheckAsync(SharedResourcesPermissions.ResourceUsers.UpdateExtraProperties);
         }
 
         public override async Task DeleteAsync(Guid id)

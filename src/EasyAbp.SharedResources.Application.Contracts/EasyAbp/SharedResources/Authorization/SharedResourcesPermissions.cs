@@ -31,6 +31,7 @@ namespace EasyAbp.SharedResources.Authorization
             public const string Delete = Default + ".Delete";
             public const string Update = Default + ".Update";
             public const string Create = Default + ".Create";
+            public const string UpdateExtraProperties = Default + ".UpdateExtraProperties";
         }
         
         public static string[] GetAll()
