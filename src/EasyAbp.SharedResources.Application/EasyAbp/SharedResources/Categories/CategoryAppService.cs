@@ -30,9 +30,9 @@ namespace EasyAbp.SharedResources.Categories
             _repository = repository;
         }
 
-        protected override IQueryable<Category> CreateFilteredQuery(GetCategoryListDto input)
+        protected override async Task<IQueryable<Category>> CreateFilteredQueryAsync(GetCategoryListDto input)
         {
-            var query = _repository.GetQueryable(input.OwnerUserId)
+            var query = (await _repository.GetQueryableAsync(input.OwnerUserId))
                 .Where(x => x.ParentCategoryId == input.RootCategoryId);
 
             return input.CustomMark != null ? query.Where(x => x.CustomMark == input.CustomMark) : query;
@@ -47,7 +47,7 @@ namespace EasyAbp.SharedResources.Categories
                 await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(input.ParentCategoryId.Value);
             }
             
-            var category = MapToEntity(input);
+            var category = await MapToEntityAsync(input);
 
             TryToSetTenantId(category);
 
@@ -60,7 +60,7 @@ namespace EasyAbp.SharedResources.Categories
                 await _categoryOwnerManager.AddCategoryOwnerAsync(category.Id, null);
             }
 
-            return MapToGetOutputDto(category);
+            return await MapToGetOutputDtoAsync(category);
         }
 
         public override async Task<CategoryDto> UpdateAsync(Guid id, CreateUpdateCategoryDto input)
@@ -76,11 +76,11 @@ namespace EasyAbp.SharedResources.Categories
                 await _categoryOwnerManager.GetOrAddCategoryOwnerAsync(category.Id, null);
             }
             
-            MapToEntity(input, category);
+            await MapToEntityAsync(input, category);
             
             await Repository.UpdateAsync(category, autoSave: true);
 
-            return MapToGetOutputDto(category);
+            return await MapToGetOutputDtoAsync(category);
         }
 
         public override async Task DeleteAsync(Guid id)

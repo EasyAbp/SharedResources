@@ -39,9 +39,9 @@ namespace EasyAbp.SharedResources.ResourceUsers
             _repository = repository;
         }
         
-        protected override IQueryable<ResourceUser> CreateFilteredQuery(GetResourceUserListDto input)
+        protected override async Task<IQueryable<ResourceUser>> CreateFilteredQueryAsync(GetResourceUserListDto input)
         {
-            return base.CreateFilteredQuery(input).Where(x => x.ResourceId == input.ResourceId);
+            return (await base.CreateFilteredQueryAsync(input)).Where(x => x.ResourceId == input.ResourceId);
         }
         
         public override async Task<ResourceUserDto> GetAsync(Guid id)

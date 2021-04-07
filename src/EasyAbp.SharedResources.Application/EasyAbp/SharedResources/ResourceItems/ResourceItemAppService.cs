@@ -30,7 +30,6 @@ namespace EasyAbp.SharedResources.ResourceItems
         private readonly IResourceItemContentConverter _resourceItemContentConverter;
         private readonly IResourceRepository _resourceRepository;
         private readonly IResourceUserRepository _resourceUserRepository;
-        private readonly IResourceItemRepository _repository;
 
         public ResourceItemAppService(
             ICategoryDataPermissionProvider categoryDataPermissionProvider,
@@ -43,12 +42,11 @@ namespace EasyAbp.SharedResources.ResourceItems
             _resourceItemContentConverter = resourceItemContentConverter;
             _resourceRepository = resourceRepository;
             _resourceUserRepository = resourceUserRepository;
-            _repository = repository;
         }
 
-        protected override IQueryable<ResourceItem> CreateFilteredQuery(GetResourceItemListDto input)
+        protected override async Task<IQueryable<ResourceItem>> CreateFilteredQueryAsync(GetResourceItemListDto input)
         {
-            return base.CreateFilteredQuery(input).Where(x => x.ResourceId == input.ResourceId);
+            return (await base.CreateFilteredQueryAsync(input)).Where(x => x.ResourceId == input.ResourceId);
         }
 
         public override async Task<ResourceItemDto> GetAsync(Guid id)
@@ -85,7 +83,7 @@ namespace EasyAbp.SharedResources.ResourceItems
                 throw new EntityNotFoundException(typeof(Resource), input.ResourceId);
             }
 
-            var query = CreateFilteredQuery(input);
+            var query = await CreateFilteredQueryAsync(input);
 
             if (!currentUserAllowedToManage)
             {
@@ -131,7 +129,7 @@ namespace EasyAbp.SharedResources.ResourceItems
                 await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(targetResource.CategoryId);
             }
             
-            MapToEntity(input, resourceItem);
+            await MapToEntityAsync(input, resourceItem);
             
             await Repository.UpdateAsync(resourceItem, autoSave: true);
 
@@ -149,9 +147,9 @@ namespace EasyAbp.SharedResources.ResourceItems
             await base.DeleteAsync(id);
         }
 
-        protected virtual async Task<ResourceItemDto> MapToGetOutputDtoAsync(ResourceItem resourceItem)
+        protected override async Task<ResourceItemDto> MapToGetOutputDtoAsync(ResourceItem resourceItem)
         {
-            var dto = MapToGetOutputDto(resourceItem);
+            var dto = await base.MapToGetOutputDtoAsync(resourceItem);
 
             if (dto.ResourceItemContent != null)
             {

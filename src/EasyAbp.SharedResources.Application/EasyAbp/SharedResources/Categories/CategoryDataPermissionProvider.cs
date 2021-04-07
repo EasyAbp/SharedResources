@@ -35,7 +35,8 @@ namespace EasyAbp.SharedResources.Categories
         
         public virtual async Task<bool> IsCurrentUserAllowedToManageAsync(Guid categoryId)
         {
-            return await IsCurrentUserHasGlobalManagePermissionAsync() || await IsCurrentUserOwnerAsync(categoryId);
+            return _currentUser.IsAuthenticated && (await IsCurrentUserHasGlobalManagePermissionAsync() ||
+                                                    await IsCurrentUserOwnerAsync(categoryId));
         }
 
         public virtual async Task<bool> IsCommonCategoryAsync(Guid categoryId)

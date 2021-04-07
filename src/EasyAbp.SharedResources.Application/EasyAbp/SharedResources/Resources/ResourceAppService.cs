@@ -49,16 +49,17 @@ namespace EasyAbp.SharedResources.Resources
                 throw new EntityNotFoundException(typeof(Resource), id);
             }
 
-            var dto = MapToGetOutputDto(resource);
+            var dto = await MapToGetOutputDtoAsync(resource);
 
-            dto.IsAuthorized = await _resourceUserRepository.FindAsync(id, CurrentUser.GetId()) != null;
+            dto.IsAuthorized = CurrentUser.IsAuthenticated &&
+                               await _resourceUserRepository.FindAsync(id, CurrentUser.GetId()) != null;
 
             return dto;
         }
         
         public override async Task<PagedResultDto<ResourceDto>> GetListAsync(GetResourceListDto input)
         {
-            var query = _repository.GetQueryableWithAuthorizationStatus(CurrentUser.GetId(), input.AuthorizedOnly)
+            var query = (await _repository.GetQueryableWithAuthorizationStatusAsync(CurrentUser.Id, input.AuthorizedOnly))
                 .Where(x => x.Resource.CategoryId == input.CategoryId);
 
             if (!await _categoryDataPermissionProvider.IsCurrentUserAllowedToManageAsync(input.CategoryId))
@@ -83,9 +84,11 @@ namespace EasyAbp.SharedResources.Resources
             );
         }
         
+        [Authorize]
         public virtual async Task<PagedResultDto<ResourceDto>> GetListAuthorizedAsync(PagedAndSortedResultRequestDto input)
         {
-            var query = _repository.GetUserAuthorizedOnlyQueryable(CurrentUser.GetId()).Where(x => x.IsPublished);
+            var query =
+                (await _repository.GetUserAuthorizedOnlyQueryableAsync(CurrentUser.GetId())).Where(x => x.IsPublished);
             
             var totalCount = await AsyncExecuter.CountAsync(query);
 
@@ -127,15 +130,17 @@ namespace EasyAbp.SharedResources.Resources
                 await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(resource.CategoryId);
             }
             
-            MapToEntity(input, resource);
+            await MapToEntityAsync(input, resource);
             
             await Repository.UpdateAsync(resource, autoSave: true);
 
-            return MapToGetOutputDto(resource);
+            return await MapToGetOutputDtoAsync(resource);
         }
 
         public override async Task DeleteAsync(Guid id)
         {
+            await CheckDeletePolicyAsync();
+            
             var resource = await GetEntityByIdAsync(id);
             
             await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(resource.CategoryId);

@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories;
 
 namespace EasyAbp.SharedResources.Categories
 {
     public interface ICategoryRepository : IRepository<Category, Guid>
     {
-        IQueryable<Category> GetQueryable(Guid? ownerUserId);
+        Task<IQueryable<Category>> GetQueryableAsync(Guid? ownerUserId);
     }
 }

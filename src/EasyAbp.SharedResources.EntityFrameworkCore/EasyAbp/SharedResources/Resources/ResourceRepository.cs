@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using EasyAbp.SharedResources.EntityFrameworkCore;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -12,25 +13,31 @@ namespace EasyAbp.SharedResources.Resources
         {
         }
 
-        public virtual IQueryable<Resource> GetUserAuthorizedOnlyQueryable(Guid userId)
+        public virtual async Task<IQueryable<Resource>> GetUserAuthorizedOnlyQueryableAsync(Guid userId)
         {
-            return from resource in DbContext.Resources
-                join resourceUser in DbContext.ResourceUsers on resource.Id equals resourceUser.ResourceId
+            return from resource in (await GetDbContextAsync()).Resources
+                join resourceUser in (await GetDbContextAsync()).ResourceUsers on resource.Id equals resourceUser.ResourceId
                 where resourceUser.UserId == userId
                 select resource;
         }
-        
-        public virtual IQueryable<ResourceAuthorizationQueryModel> GetQueryableWithAuthorizationStatus(Guid userId,
-            bool getAuthorizedOnly)
+
+        public virtual async Task<IQueryable<ResourceAuthorizationQueryModel>> GetQueryableWithAuthorizationStatusAsync(
+            Guid? userId, bool getAuthorizedOnly)
         {
             if (getAuthorizedOnly)
             {
-                return from resource in DbContext.Resources
-                    join resourceUser in DbContext.ResourceUsers on
+                if (!userId.HasValue)
+                {
+                    return (await GetQueryableAsync()).Where(x => false).Select(x => new ResourceAuthorizationQueryModel
+                        {Resource = x, IsAuthorized = false});
+                }
+
+                return from resource in (await GetDbContextAsync()).Resources
+                    join resourceUser in (await GetDbContextAsync()).ResourceUsers on
                         new
                         {
                             ResourceId = resource.Id,
-                            UserId = userId
+                            UserId = userId.Value
                         }
                         equals new
                         {
@@ -40,12 +47,18 @@ namespace EasyAbp.SharedResources.Resources
                     select new ResourceAuthorizationQueryModel {Resource = resource, IsAuthorized = true};
             }
 
-            return from resource in DbContext.Resources
-                join resourceUser in DbContext.ResourceUsers on
+            if (!userId.HasValue)
+            {
+                return (await GetQueryableAsync()).Select(x => new ResourceAuthorizationQueryModel
+                    {Resource = x, IsAuthorized = false});
+            }
+
+            return from resource in (await GetDbContextAsync()).Resources
+                join resourceUser in (await GetDbContextAsync()).ResourceUsers on
                     new
                     {
                         ResourceId = resource.Id,
-                        UserId = userId
+                        UserId = userId.Value
                     }
                     equals new
                     {
