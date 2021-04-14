@@ -19,6 +19,7 @@
     "ResourcePreviewMediaResources": "Preview media resources",
     "ResourceExtraProperties":"Extra properties",
     "ResourceIsPublished": "Published resource",
+    "ResourceItemCount": "Item count",
     "CreateResource": "New",
     "EditResource": "Edit",
     "ResourceDeletionConfirmationMessage": "Are you sure to delete the resource {0}?",

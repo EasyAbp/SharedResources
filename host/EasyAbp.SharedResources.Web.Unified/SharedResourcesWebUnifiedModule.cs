@@ -16,6 +16,7 @@ using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.Autofac;
+using Volo.Abp.BackgroundJobs;
 using Volo.Abp.Data;
 using Volo.Abp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore.SqlServer;
@@ -62,8 +63,9 @@ namespace EasyAbp.SharedResources
         typeof(AbpTenantManagementApplicationModule),
         typeof(AbpTenantManagementEntityFrameworkCoreModule),
         typeof(AbpAspNetCoreMvcUiBasicThemeModule),
-        typeof(AbpAspNetCoreSerilogModule)
-        )]
+        typeof(AbpAspNetCoreSerilogModule),
+        typeof(AbpBackgroundJobsModule)
+    )]
     public class SharedResourcesWebUnifiedModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)

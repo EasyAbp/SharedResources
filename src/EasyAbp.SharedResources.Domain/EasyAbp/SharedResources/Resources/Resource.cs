@@ -19,6 +19,8 @@ namespace EasyAbp.SharedResources.Resources
         public virtual string PreviewMediaResources { get; protected set; }
         
         public virtual bool IsPublished { get; protected set; }
+        
+        public virtual int ItemCount { get; protected set; }
 
         protected Resource()
         {
@@ -30,14 +32,21 @@ namespace EasyAbp.SharedResources.Resources
             string name,
             string description,
             string previewMediaResources,
-            bool isPublished
-        ) :base(id)
+            bool isPublished,
+            int itemCount = 0
+        ) : base(id)
         {
             CategoryId = categoryId;
             Name = name;
             Description = description;
             PreviewMediaResources = previewMediaResources;
             IsPublished = isPublished;
+            ItemCount = itemCount;
+        }
+
+        public void SetItemCount(int itemCount)
+        {
+            ItemCount = itemCount;
         }
     }
 }

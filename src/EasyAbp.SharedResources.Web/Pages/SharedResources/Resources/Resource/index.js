@@ -61,6 +61,7 @@ $(function () {
             },
             { data: "name" },
             { data: "isPublished" },
+            { data: "itemCount" },
         ]
     }));
 

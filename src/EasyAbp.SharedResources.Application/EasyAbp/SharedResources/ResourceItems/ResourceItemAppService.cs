@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Authorization;
+using Volo.Abp.BackgroundJobs;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Users;
 
@@ -28,18 +29,21 @@ namespace EasyAbp.SharedResources.ResourceItems
 
         private readonly ICategoryDataPermissionProvider _categoryDataPermissionProvider;
         private readonly IResourceItemContentConverter _resourceItemContentConverter;
+        private readonly IBackgroundJobManager _backgroundJobManager;
         private readonly IResourceRepository _resourceRepository;
         private readonly IResourceUserRepository _resourceUserRepository;
 
         public ResourceItemAppService(
             ICategoryDataPermissionProvider categoryDataPermissionProvider,
             IResourceItemContentConverter resourceItemContentConverter,
+            IBackgroundJobManager backgroundJobManager,
             IResourceRepository resourceRepository,
             IResourceUserRepository resourceUserRepository,
             IResourceItemRepository repository) : base(repository)
         {
             _categoryDataPermissionProvider = categoryDataPermissionProvider;
             _resourceItemContentConverter = resourceItemContentConverter;
+            _backgroundJobManager = backgroundJobManager;
             _resourceRepository = resourceRepository;
             _resourceUserRepository = resourceUserRepository;
         }
@@ -103,11 +107,26 @@ namespace EasyAbp.SharedResources.ResourceItems
             );
         }
 
+        protected virtual async Task EnqueueResourceItemCountUpdateJobOnUowCompletedAsync(Guid resourceId)
+        {
+            CurrentUnitOfWork.OnCompleted(async () =>
+            {
+                await _backgroundJobManager.EnqueueAsync(new ResourceItemCountUpdateJobArgs
+                {
+                    ResourceId = resourceId
+                });
+            });
+
+            await Task.CompletedTask;
+        }
+
         public override async Task<ResourceItemDto> CreateAsync(CreateUpdateResourceItemDto input)
         {
             var resource = await _resourceRepository.GetAsync(input.ResourceId);
 
             await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(resource.CategoryId);
+
+            await EnqueueResourceItemCountUpdateJobOnUowCompletedAsync(resource.Id);
 
             return await base.CreateAsync(input);
         }
@@ -132,6 +151,8 @@ namespace EasyAbp.SharedResources.ResourceItems
             await MapToEntityAsync(input, resourceItem);
             
             await Repository.UpdateAsync(resourceItem, autoSave: true);
+            
+            await EnqueueResourceItemCountUpdateJobOnUowCompletedAsync(resource.Id);
 
             return await MapToGetOutputDtoAsync(resourceItem);
         }
@@ -143,6 +164,8 @@ namespace EasyAbp.SharedResources.ResourceItems
             var resource = await _resourceRepository.GetAsync(resourceItem.ResourceId);
 
             await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(resource.CategoryId);
+
+            await EnqueueResourceItemCountUpdateJobOnUowCompletedAsync(resource.Id);
 
             await base.DeleteAsync(id);
         }

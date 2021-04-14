@@ -19,6 +19,7 @@
     "ResourcePreviewMediaResources": "预览媒体资源",
     "ResourceExtraProperties":"扩展配置",
     "ResourceIsPublished": "是否发布",
+    "ResourceItemCount": "资源项数量",
     "CreateResource": "新建",
     "EditResource": "编辑",
     "ResourceDeletionConfirmationMessage": "确认删除资源 {0}?",

@@ -16,5 +16,7 @@ namespace EasyAbp.SharedResources.Resources.Dtos
         public bool IsPublished { get; set; }
         
         public bool? IsAuthorized { get; set; }
+        
+        public int ItemCount { get; set; }
     }
 }
