@@ -52,10 +52,10 @@ namespace EasyAbp.SharedResources.ResourceUsers
         }
 
         [HttpPut]
-        [Route("{id}/extra-properties")]
-        public Task<ResourceUserDto> UpdateExtraPropertiesAsync(Guid id, UpdateResourceUserExtraPropertiesInput input)
+        [Route("extra-properties")]
+        public Task<ResourceUserDto> UpdateExtraPropertiesAsync(UpdateResourceUserExtraPropertiesInput input)
         {
-            return _service.UpdateExtraPropertiesAsync(id, input);
+            return _service.UpdateExtraPropertiesAsync(input);
         }
     }
 }

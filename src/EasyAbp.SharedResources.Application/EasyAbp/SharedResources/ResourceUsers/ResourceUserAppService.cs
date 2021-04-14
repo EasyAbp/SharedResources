@@ -88,17 +88,13 @@ namespace EasyAbp.SharedResources.ResourceUsers
             return await base.UpdateAsync(id, input);
         }
         
-        public virtual async Task<ResourceUserDto> UpdateExtraPropertiesAsync(Guid id, UpdateResourceUserExtraPropertiesInput input)
+        public virtual async Task<ResourceUserDto> UpdateExtraPropertiesAsync(UpdateResourceUserExtraPropertiesInput input)
         {
-            await CheckUpdateExtraPropertiesPolicyAsync();
-            
-            var resourceUser = await GetEntityByIdAsync(id);
+            await CheckUpdateExtraPropertiesPolicyAsync(input);
 
-            if (resourceUser.UserId != CurrentUser.GetId() &&
-                !await AuthorizationService.IsGrantedAsync(SharedResourcesPermissions.ResourceUsers.GlobalManage))
-            {
-                throw new AbpAuthorizationException();
-            }
+            var userId = input.UserId ?? CurrentUser.GetId();
+
+            var resourceUser = await _repository.GetAsync(x => x.ResourceId == input.ResourceId && x.UserId == userId);
             
             input.MapExtraPropertiesTo(resourceUser);
 
@@ -107,9 +103,14 @@ namespace EasyAbp.SharedResources.ResourceUsers
             return await MapToGetOutputDtoAsync(resourceUser);
         }
 
-        protected virtual async Task CheckUpdateExtraPropertiesPolicyAsync()
+        protected virtual async Task CheckUpdateExtraPropertiesPolicyAsync(UpdateResourceUserExtraPropertiesInput input)
         {
             await AuthorizationService.CheckAsync(SharedResourcesPermissions.ResourceUsers.UpdateExtraProperties);
+
+            if (input.UserId.HasValue && input.UserId != CurrentUser.GetId())
+            {
+                await AuthorizationService.CheckAsync(SharedResourcesPermissions.ResourceUsers.GlobalManage);
+            }
         }
 
         public override async Task DeleteAsync(Guid id)
