@@ -13,7 +13,7 @@ $(function () {
         searching: false,
         autoWidth: false,
         scrollCollapse: true,
-        order: [[1, "asc"]],
+        order: [[4, "desc"]],
         ajax: abp.libs.datatables.createAjax(service.getList, function () {
             return { resourceId: resourceId };
         }),
@@ -49,6 +49,7 @@ $(function () {
             { data: "name" },
             { data: "isPublished" },
             { data: "isPublic" },
+            { data: "displayOrder" },
         ]
     }));
 

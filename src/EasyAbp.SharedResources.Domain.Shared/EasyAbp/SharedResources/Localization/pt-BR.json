@@ -35,6 +35,7 @@
     "ResourceItemDescription": "Description",
     "ResourceItemIsPublished": "Published resource item",
     "ResourceItemIsPublic": "Public resource item",
+    "ResourceItemDisplayOrder": "Display order",
     "CreateResourceItem": "New",
     "EditResourceItem": "Edit",
     "ResourceItemDeletionConfirmationMessage": "Are you sure to delete the resource item {0}?",

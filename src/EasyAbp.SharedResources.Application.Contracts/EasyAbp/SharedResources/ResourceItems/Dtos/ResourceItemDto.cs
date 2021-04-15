@@ -17,6 +17,8 @@ namespace EasyAbp.SharedResources.ResourceItems.Dtos
 
         public bool IsPublic { get; set; }
         
+        public int DisplayOrder { get; set; }
+        
         public ResourceItemContentDto ResourceItemContent { get; set; }
     }
 }

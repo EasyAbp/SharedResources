@@ -76,6 +76,11 @@ namespace EasyAbp.SharedResources.ResourceItems
             return RemoveResourceItemContent(dto);
         }
 
+        protected override IQueryable<ResourceItem> ApplyDefaultSorting(IQueryable<ResourceItem> query)
+        {
+            return query.OrderByDescending(e => e.DisplayOrder).ThenBy(e => e.Id);
+        }
+
         public override async Task<PagedResultDto<ResourceItemDto>> GetListAsync(GetResourceItemListDto input)
         {
             var resource = await _resourceRepository.GetAsync(input.ResourceId);

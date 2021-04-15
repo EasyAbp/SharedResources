@@ -27,5 +27,8 @@ namespace EasyAbp.SharedResources.Web.Pages.SharedResources.ResourceItems.Resour
 
         [Display(Name = "ResourceItemIsPublic")]
         public bool IsPublic { get; set; }
+
+        [Display(Name = "ResourceItemDisplayOrder")]
+        public int DisplayOrder { get; set; }
     }
 }

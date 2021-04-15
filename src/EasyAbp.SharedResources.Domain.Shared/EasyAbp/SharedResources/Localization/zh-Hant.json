@@ -35,6 +35,7 @@
     "ResourceItemDescription": "描述",
     "ResourceItemIsPublished": "是否發佈",
     "ResourceItemIsPublic": "是否為公開資源",
+    "ResourceItemDisplayOrder": "顯示順序",
     "CreateResourceItem": "新建",
     "EditResourceItem": "編輯",
     "ResourceItemDeletionConfirmationMessage": "確認删除資源項 {0}?",

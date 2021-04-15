@@ -21,6 +21,8 @@ namespace EasyAbp.SharedResources.ResourceItems
         
         public virtual bool IsPublic { get; protected set; }
         
+        public virtual int DisplayOrder { get; protected set; }
+        
         public virtual ResourceItemContent ResourceItemContent { get; protected set; }
 
         protected ResourceItem()
@@ -34,7 +36,8 @@ namespace EasyAbp.SharedResources.ResourceItems
             string name,
             string description,
             bool isPublished,
-            bool isPublic
+            bool isPublic,
+            int displayOrder
         ) :base(id)
         {
             ResourceId = resourceId;
@@ -43,6 +46,7 @@ namespace EasyAbp.SharedResources.ResourceItems
             Description = description;
             IsPublished = isPublished;
             IsPublic = isPublic;
+            DisplayOrder = displayOrder;
         }
     }
 }
