@@ -51,6 +51,14 @@ namespace EasyAbp.SharedResources.ResourceUsers
             return _service.DeleteAsync(id);
         }
 
+        [HttpGet]
+        [Route("extra-properties")]
+        public Task<GetResourceUserExtraPropertiesInputOutput> GetExtraPropertiesAsync(
+            GetResourceUserExtraPropertiesInput input)
+        {
+            return _service.GetExtraPropertiesAsync(input);
+        }
+
         [HttpPut]
         [Route("extra-properties")]
         public Task<ResourceUserDto> UpdateExtraPropertiesAsync(UpdateResourceUserExtraPropertiesInput input)

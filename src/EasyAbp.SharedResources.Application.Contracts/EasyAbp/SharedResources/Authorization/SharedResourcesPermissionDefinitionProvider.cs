@@ -27,6 +27,7 @@ namespace EasyAbp.SharedResources.Authorization
             resourceUsers.AddChild(SharedResourcesPermissions.ResourceUsers.Create, L("Permission:Create"));
             resourceUsers.AddChild(SharedResourcesPermissions.ResourceUsers.Update, L("Permission:Update"));
             resourceUsers.AddChild(SharedResourcesPermissions.ResourceUsers.Delete, L("Permission:Delete"));
+            resourceUsers.AddChild(SharedResourcesPermissions.ResourceUsers.GetExtraProperties, L("Permission:GetExtraProperties"));
             resourceUsers.AddChild(SharedResourcesPermissions.ResourceUsers.UpdateExtraProperties, L("Permission:UpdateExtraProperties"));
         }
 

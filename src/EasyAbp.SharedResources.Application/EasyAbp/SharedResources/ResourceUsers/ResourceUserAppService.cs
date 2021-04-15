@@ -58,6 +58,21 @@ namespace EasyAbp.SharedResources.ResourceUsers
             return dto;
         }
 
+        public virtual async Task<GetResourceUserExtraPropertiesInputOutput> GetExtraPropertiesAsync(
+            GetResourceUserExtraPropertiesInput input)
+        {
+            await CheckGetExtraPropertiesPolicyAsync(input);
+
+            var userId = input.UserId ?? CurrentUser.GetId();
+
+            var resourceUser = await _repository.GetAsync(x => x.ResourceId == input.ResourceId && x.UserId == userId);
+
+            return new GetResourceUserExtraPropertiesInputOutput
+            {
+                ExtraProperties = resourceUser.ExtraProperties
+            };
+        }
+
         public override async Task<PagedResultDto<ResourceUserDto>> GetListAsync(GetResourceUserListDto input)
         {
             var resource = await _resourceRepository.GetAsync(input.ResourceId);
@@ -103,6 +118,16 @@ namespace EasyAbp.SharedResources.ResourceUsers
             return await MapToGetOutputDtoAsync(resourceUser);
         }
 
+        protected virtual async Task CheckGetExtraPropertiesPolicyAsync(GetResourceUserExtraPropertiesInput input)
+        {
+            await AuthorizationService.CheckAsync(SharedResourcesPermissions.ResourceUsers.GetExtraProperties);
+
+            if (input.UserId.HasValue && input.UserId != CurrentUser.GetId())
+            {
+                await AuthorizationService.CheckAsync(SharedResourcesPermissions.ResourceUsers.GlobalManage);
+            }
+        }
+        
         protected virtual async Task CheckUpdateExtraPropertiesPolicyAsync(UpdateResourceUserExtraPropertiesInput input)
         {
             await AuthorizationService.CheckAsync(SharedResourcesPermissions.ResourceUsers.UpdateExtraProperties);

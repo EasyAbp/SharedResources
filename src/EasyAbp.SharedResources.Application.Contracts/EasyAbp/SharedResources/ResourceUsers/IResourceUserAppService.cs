@@ -14,6 +14,8 @@ namespace EasyAbp.SharedResources.ResourceUsers
             CreateUpdateResourceUserDto,
             CreateUpdateResourceUserDto>
     {
+        Task<GetResourceUserExtraPropertiesInputOutput> GetExtraPropertiesAsync(GetResourceUserExtraPropertiesInput input);
+        
         Task<ResourceUserDto> UpdateExtraPropertiesAsync(UpdateResourceUserExtraPropertiesInput input);
     }
 }
