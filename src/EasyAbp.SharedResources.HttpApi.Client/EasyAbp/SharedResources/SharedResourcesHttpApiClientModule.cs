@@ -1,15 +1,17 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Http.Client;
 using Volo.Abp.Modularity;
+using Volo.Abp.VirtualFileSystem;
 
 namespace EasyAbp.SharedResources
 {
     [DependsOn(
         typeof(SharedResourcesApplicationContractsModule),
-        typeof(AbpHttpClientModule))]
+        typeof(AbpHttpClientModule)
+    )]
     public class SharedResourcesHttpApiClientModule : AbpModule
     {
-        public const string RemoteServiceName = "EasyAbpSharedResources";
+        public const string RemoteServiceName = SharedResourcesRemoteServiceConsts.RemoteServiceName;
 
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
@@ -17,6 +19,11 @@ namespace EasyAbp.SharedResources
                 typeof(SharedResourcesApplicationContractsModule).Assembly,
                 RemoteServiceName
             );
+            
+            Configure<AbpVirtualFileSystemOptions>(options =>
+            {
+                options.FileSets.AddEmbedded<SharedResourcesApplicationContractsModule>();
+            });
         }
     }
 }

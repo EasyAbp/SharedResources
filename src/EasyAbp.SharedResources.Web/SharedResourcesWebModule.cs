@@ -12,7 +12,7 @@ using Volo.Abp.VirtualFileSystem;
 namespace EasyAbp.SharedResources.Web
 {
     [DependsOn(
-        typeof(SharedResourcesHttpApiModule),
+        typeof(SharedResourcesApplicationContractsModule),
         typeof(AbpAspNetCoreMvcUiThemeSharedModule),
         typeof(AbpAutoMapperModule)
         )]

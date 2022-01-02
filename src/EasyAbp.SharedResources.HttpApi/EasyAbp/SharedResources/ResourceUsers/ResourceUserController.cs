@@ -7,7 +7,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace EasyAbp.SharedResources.ResourceUsers
 {
-    [RemoteService(Name = "EasyAbpSharedResources")]
+    [RemoteService(Name = SharedResourcesRemoteServiceConsts.RemoteServiceName)]
     [Route("/api/shared-resources/resource-user")]
     public class ResourceUserController : SharedResourcesController, IResourceUserAppService
     {
