@@ -58,7 +58,7 @@ namespace EasyAbp.SharedResources.ResourceUsers
             return dto;
         }
 
-        public virtual async Task<GetResourceUserExtraPropertiesInputOutput> GetExtraPropertiesAsync(
+        public virtual async Task<GetResourceUserExtraPropertiesOutput> GetExtraPropertiesAsync(
             GetResourceUserExtraPropertiesInput input)
         {
             await CheckGetExtraPropertiesPolicyAsync(input);
@@ -67,10 +67,11 @@ namespace EasyAbp.SharedResources.ResourceUsers
 
             var resourceUser = await _repository.GetAsync(x => x.ResourceId == input.ResourceId && x.UserId == userId);
 
-            return new GetResourceUserExtraPropertiesInputOutput
-            {
-                ExtraProperties = resourceUser.ExtraProperties
-            };
+            var result = new GetResourceUserExtraPropertiesOutput();
+            
+            resourceUser.MapExtraPropertiesTo(result, MappingPropertyDefinitionChecks.None);
+            
+            return result;
         }
 
         public override async Task<PagedResultDto<ResourceUserDto>> GetListAsync(GetResourceUserListDto input)

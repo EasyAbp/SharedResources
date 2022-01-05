@@ -53,7 +53,7 @@ namespace EasyAbp.SharedResources.ResourceUsers
 
         [HttpGet]
         [Route("extra-properties")]
-        public Task<GetResourceUserExtraPropertiesInputOutput> GetExtraPropertiesAsync(
+        public Task<GetResourceUserExtraPropertiesOutput> GetExtraPropertiesAsync(
             GetResourceUserExtraPropertiesInput input)
         {
             return _service.GetExtraPropertiesAsync(input);

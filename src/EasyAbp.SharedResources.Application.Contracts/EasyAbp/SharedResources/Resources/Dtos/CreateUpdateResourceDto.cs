@@ -1,11 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using Volo.Abp.Data;
+using Volo.Abp.ObjectExtending;
 
 namespace EasyAbp.SharedResources.Resources.Dtos
 {
-    public class CreateUpdateResourceDto : IHasExtraProperties
+    public class CreateUpdateResourceDto : ExtensibleObject
     {
         [DisplayName("Category")]
         public Guid CategoryId { get; set; }
@@ -19,9 +18,6 @@ namespace EasyAbp.SharedResources.Resources.Dtos
         [DisplayName("ResourcePreviewMediaResources")]
         public string PreviewMediaResources { get; set; }
 
-        [DisplayName("ResourceExtraProperties")]
-        public ExtraPropertyDictionary ExtraProperties { get; set; }
-        
         [DisplayName("ResourceIsPublished")]
         public bool IsPublished { get; set; }
     }
