@@ -3,14 +3,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
 using Volo.Abp.EntityFrameworkCore;
+using Volo.Abp.EntityFrameworkCore.Sqlite;
 using Volo.Abp.Modularity;
 
 namespace EasyAbp.SharedResources.EntityFrameworkCore
 {
     [DependsOn(
         typeof(SharedResourcesTestBaseModule),
-        typeof(SharedResourcesEntityFrameworkCoreModule)
-        )]
+        typeof(SharedResourcesEntityFrameworkCoreModule),
+        typeof(AbpEntityFrameworkCoreSqliteModule)
+    )]
     public class SharedResourcesEntityFrameworkCoreTestModule : AbpModule
     {
         public override void ConfigureServices(ServiceConfigurationContext context)
