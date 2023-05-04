@@ -1058,6 +1058,9 @@ namespace EasyAbp.SharedResources.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("LastModifierId");
 
+                    b.Property<DateTimeOffset?>("LastPasswordChangeTime")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<bool>("LockoutEnabled")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -1105,6 +1108,9 @@ namespace EasyAbp.SharedResources.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)")
                         .HasColumnName("SecurityStamp");
+
+                    b.Property<bool>("ShouldChangePasswordOnNextLogin")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Surname")
                         .HasMaxLength(64)
@@ -1166,6 +1172,33 @@ namespace EasyAbp.SharedResources.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("AbpUserClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Volo.Abp.Identity.IdentityUserDelegation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("SourceUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("TargetUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("TenantId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("TenantId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AbpUserDelegations", (string)null);
                 });
 
             modelBuilder.Entity("Volo.Abp.Identity.IdentityUserLogin", b =>
