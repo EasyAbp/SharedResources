@@ -20,7 +20,8 @@ namespace EasyAbp.SharedResources.Web.Menus
         {
             var l = context.GetLocalizer<SharedResourcesResource>();            //Add main menu items.
 
-            var sharedResourcesMenuItem = new ApplicationMenuItem(SharedResourcesMenus.Prefix, l["Menu:SharedResources"]);
+            var sharedResourcesMenuItem = new ApplicationMenuItem(SharedResourcesMenus.Prefix,
+                l["Menu:SharedResources"], icon: "fa fa-share-alt-square");
 
             if (await context.IsGrantedAsync(SharedResourcesPermissions.Categories.Default))
             {
@@ -31,7 +32,7 @@ namespace EasyAbp.SharedResources.Web.Menus
             
             if (!sharedResourcesMenuItem.Items.IsNullOrEmpty())
             {
-                context.Menu.Items.Add(sharedResourcesMenuItem);
+                context.Menu.GetAdministration().Items.Add(sharedResourcesMenuItem);
             }
         }
     }
