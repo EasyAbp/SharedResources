@@ -173,7 +173,7 @@ namespace EasyAbp.SharedResources
         
         private void ConfigureConventionalControllers()
         {
-            Configure<AbpAspNetCoreMvcOptions>(options =>
+            PreConfigure<AbpAspNetCoreMvcOptions>(options =>
             {
                 options.ConventionalControllers.Create(typeof(SharedResourcesApplicationModule).Assembly, setting =>
                 {
