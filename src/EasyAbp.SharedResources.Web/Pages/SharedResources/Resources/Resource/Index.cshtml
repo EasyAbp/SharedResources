@@ -11,7 +11,8 @@
 @inject IPageLayout PageLayout
 @{
     PageLayout.Content.Title = L["Resource"].Value;
-    PageLayout.Content.BreadCrumb.Add(L["Menu:Resource"].Value);
+    PageLayout.Content.BreadCrumb.Add(L["Menu:Category"].Value);
+    PageLayout.Content.BreadCrumb.Add(L["Menu:SharedResources"].Value);
     PageLayout.Content.MenuItemName = "EasyAbpSharedResourcesCategory";
 }
 
@@ -23,27 +24,23 @@
 {
     <abp-style src="/Pages/SharedResources/Resources/Resource/index.css"/>
 }
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(SharedResourcesPermissions.Resources.Create))
+    {
+        <abp-button id="NewResourceButton"
+                    text="@L["CreateResource"].Value"
+                    icon="plus"
+                    size="Small"
+                    button-type="Primary"/>
+    }
+}
+
 <script>
     let categoryId = '@Model.CategoryId';
 </script>
 
 <abp-card>
-    <abp-card-header>
-        <abp-row>
-            <abp-column size-md="_6">
-                <abp-card-title>@L["Resource"]</abp-card-title>
-            </abp-column>
-            <abp-column size-md="_6" class="text-end">
-                @if (await Authorization.IsGrantedAsync(SharedResourcesPermissions.Resources.Create))
-                {
-                    <abp-button id="NewResourceButton"
-                                text="@L["CreateResource"].Value"
-                                icon="plus"
-                                button-type="Primary"/>
-                }
-            </abp-column>
-        </abp-row>
-    </abp-card-header>
     <abp-card-body>
         <abp-table striped-rows="true" id="ResourceTable" class="nowrap">
             <thead>

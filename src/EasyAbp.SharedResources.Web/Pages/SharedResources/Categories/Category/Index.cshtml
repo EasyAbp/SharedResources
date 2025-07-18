@@ -10,11 +10,11 @@
 @inject IHtmlLocalizer<SharedResourcesResource> L
 @inject IPageLayout PageLayout
 @{
-    PageLayout.Content.Title = L["Category"].Value;
-    PageLayout.Content.BreadCrumb.Add(L["Menu:Category"].Value);
-    PageLayout.Content.MenuItemName = "EasyAbpSharedResourcesCategory";
-
     var title = Model.RootCategoryId.HasValue ? $"{L["Category"].Value} - {Model.RootCategoryName}" : L["Category"].Value;
+
+    PageLayout.Content.Title = title;
+    PageLayout.Content.BreadCrumb.Add(L["Menu:SharedResources"].Value);
+    PageLayout.Content.MenuItemName = "EasyAbpSharedResourcesCategory";
 }
 
 @section scripts
@@ -25,28 +25,24 @@
 {
     <abp-style src="/Pages/SharedResources/Categories/Category/index.css"/>
 }
+@section content_toolbar
+{
+    @if (await Authorization.IsGrantedAsync(SharedResourcesPermissions.Categories.Create))
+    {
+        <abp-button id="NewCategoryButton"
+                    text="@L["CreateCategory"].Value"
+                    icon="plus"
+                    size="Small"
+                    button-type="Primary"/>
+    }
+}
+
 <script>
     let ownerUserId = '@Model.OwnerUserId';
     let rootCategoryId = '@Model.RootCategoryId';
 </script>
 
 <abp-card>
-    <abp-card-header>
-        <abp-row>
-            <abp-column size-md="_6">
-                <abp-card-title>@title</abp-card-title>
-            </abp-column>
-            <abp-column size-md="_6" class="text-end">
-                @if (await Authorization.IsGrantedAsync(SharedResourcesPermissions.Categories.Create))
-                {
-                    <abp-button id="NewCategoryButton"
-                                text="@L["CreateCategory"].Value"
-                                icon="plus"
-                                button-type="Primary"/>
-                }
-            </abp-column>
-        </abp-row>
-    </abp-card-header>
     <abp-card-body>
         <abp-table striped-rows="true" id="CategoryTable" class="nowrap">
             <thead>
