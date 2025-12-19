@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using EasyAbp.SharedResources.Authorization;
 using EasyAbp.SharedResources.Categories;
 using EasyAbp.SharedResources.CategoryOwners;
+using EasyAbp.SharedResources.Localization;
 using EasyAbp.SharedResources.Resources;
 using EasyAbp.SharedResources.ResourceUsers.Dtos;
 using Microsoft.AspNetCore.Authorization;
@@ -37,6 +38,9 @@ namespace EasyAbp.SharedResources.ResourceUsers
             _categoryDataPermissionProvider = categoryDataPermissionProvider;
             _resourceRepository = resourceRepository;
             _repository = repository;
+
+            LocalizationResource = typeof(SharedResourcesResource);
+            ObjectMapperContext = typeof(SharedResourcesApplicationModule);
         }
         
         protected override async Task<IQueryable<ResourceUser>> CreateFilteredQueryAsync(GetResourceUserListDto input)

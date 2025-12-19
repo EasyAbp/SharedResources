@@ -228,8 +228,8 @@ namespace EasyAbp.SharedResources
             }
 
             app.UseHttpsRedirection();
-            app.MapAbpStaticAssets();
             app.UseRouting();
+            app.MapAbpStaticAssets();
             app.UseAuthentication();
 
             if (MultiTenancyConsts.IsEnabled)

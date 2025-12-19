@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using EasyAbp.SharedResources.Authorization;
 using EasyAbp.SharedResources.Categories.Dtos;
 using EasyAbp.SharedResources.CategoryOwners;
+using EasyAbp.SharedResources.Localization;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Users;
 
@@ -28,6 +29,9 @@ namespace EasyAbp.SharedResources.Categories
             _categoryOwnerManager = categoryOwnerManager;
             _categoryDataPermissionProvider = categoryDataPermissionProvider;
             _repository = repository;
+
+            LocalizationResource = typeof(SharedResourcesResource);
+            ObjectMapperContext = typeof(SharedResourcesApplicationModule);
         }
 
         protected override async Task<IQueryable<Category>> CreateFilteredQueryAsync(GetCategoryListDto input)

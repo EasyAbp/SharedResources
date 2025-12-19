@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EasyAbp.SharedResources.Authorization;
 using EasyAbp.SharedResources.Categories;
 using EasyAbp.SharedResources.CategoryOwners;
+using EasyAbp.SharedResources.Localization;
 using EasyAbp.SharedResources.ResourceItems.Dtos;
 using EasyAbp.SharedResources.Resources;
 using EasyAbp.SharedResources.ResourceUsers;
@@ -46,6 +47,9 @@ namespace EasyAbp.SharedResources.ResourceItems
             _backgroundJobManager = backgroundJobManager;
             _resourceRepository = resourceRepository;
             _resourceUserRepository = resourceUserRepository;
+
+            LocalizationResource = typeof(SharedResourcesResource);
+            ObjectMapperContext = typeof(SharedResourcesApplicationModule);
         }
 
         protected override async Task<IQueryable<ResourceItem>> CreateFilteredQueryAsync(GetResourceItemListDto input)

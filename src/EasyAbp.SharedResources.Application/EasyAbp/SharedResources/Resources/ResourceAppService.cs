@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using EasyAbp.SharedResources.Authorization;
 using EasyAbp.SharedResources.Categories;
 using EasyAbp.SharedResources.CategoryOwners;
+using EasyAbp.SharedResources.Localization;
 using EasyAbp.SharedResources.ResourceItems;
 using EasyAbp.SharedResources.Resources.Dtos;
 using EasyAbp.SharedResources.ResourceUsers;
@@ -38,6 +39,9 @@ namespace EasyAbp.SharedResources.Resources
             _resourceItemRepository = resourceItemRepository;
             _resourceUserRepository = resourceUserRepository;
             _repository = repository;
+
+            LocalizationResource = typeof(SharedResourcesResource);
+            ObjectMapperContext = typeof(SharedResourcesApplicationModule);
         }
 
         public override async Task<ResourceDto> GetAsync(Guid id)
