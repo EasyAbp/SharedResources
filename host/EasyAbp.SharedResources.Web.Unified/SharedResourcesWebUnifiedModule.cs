@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using EasyAbp.SharedResources.EntityFrameworkCore;
 using EasyAbp.SharedResources.MultiTenancy;
 using EasyAbp.SharedResources.Web;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.Swagger;
 using Volo.Abp;
 using Volo.Abp.Account;
