@@ -4,7 +4,7 @@ using EasyAbp.SharedResources.Localization;
 using EasyAbp.SharedResources.Web.Menus;
 using Volo.Abp.AspNetCore.Mvc.Localization;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
-using Volo.Abp.AutoMapper;
+using Volo.Abp.Mapperly;
 using Volo.Abp.Modularity;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.VirtualFileSystem;
@@ -14,7 +14,7 @@ namespace EasyAbp.SharedResources.Web
     [DependsOn(
         typeof(SharedResourcesApplicationContractsModule),
         typeof(AbpAspNetCoreMvcUiThemeSharedModule),
-        typeof(AbpAutoMapperModule)
+        typeof(AbpMapperlyModule)
         )]
     public class SharedResourcesWebModule : AbpModule
     {
@@ -43,11 +43,7 @@ namespace EasyAbp.SharedResources.Web
                 options.FileSets.AddEmbedded<SharedResourcesWebModule>();
             });
 
-            context.Services.AddAutoMapperObjectMapper<SharedResourcesWebModule>();
-            Configure<AbpAutoMapperOptions>(options =>
-            {
-                options.AddMaps<SharedResourcesWebModule>(validate: true);
-            });
+            context.Services.AddMapperlyObjectMapper<SharedResourcesWebModule>();
 
             Configure<RazorPagesOptions>(options =>
             {

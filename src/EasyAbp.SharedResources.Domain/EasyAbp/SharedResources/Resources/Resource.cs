@@ -44,6 +44,20 @@ namespace EasyAbp.SharedResources.Resources
             ItemCount = itemCount;
         }
 
+        public void Update(
+            Guid categoryId,
+            string name,
+            string description,
+            string previewMediaResources,
+            bool isPublished)
+        {
+            CategoryId = categoryId;
+            Name = name;
+            Description = description;
+            PreviewMediaResources = previewMediaResources;
+            IsPublished = isPublished;
+        }
+
         public void SetItemCount(int itemCount)
         {
             ItemCount = itemCount;

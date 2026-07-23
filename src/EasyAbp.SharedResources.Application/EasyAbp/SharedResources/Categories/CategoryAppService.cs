@@ -34,6 +34,25 @@ namespace EasyAbp.SharedResources.Categories
             ObjectMapperContext = typeof(SharedResourcesApplicationModule);
         }
 
+        protected override Task<Category> MapToEntityAsync(CreateUpdateCategoryDto createInput)
+        {
+            return Task.FromResult(new Category(
+                GuidGenerator.Create(),
+                createInput.ParentCategoryId,
+                createInput.Name,
+                createInput.CustomMark));
+        }
+
+        protected override Task MapToEntityAsync(CreateUpdateCategoryDto updateInput, Category entity)
+        {
+            entity.Update(
+                updateInput.ParentCategoryId,
+                updateInput.Name,
+                updateInput.CustomMark);
+
+            return Task.CompletedTask;
+        }
+
         protected override async Task<IQueryable<Category>> CreateFilteredQueryAsync(GetCategoryListDto input)
         {
             var query = (await _repository.GetQueryableAsync(input.OwnerUserId))

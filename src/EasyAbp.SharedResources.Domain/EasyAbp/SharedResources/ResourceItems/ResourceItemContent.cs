@@ -28,5 +28,10 @@ namespace EasyAbp.SharedResources.ResourceItems
             ResourceItemId = resourceItemId;
             Content = content;
         }
+
+        public void SetContent(string content)
+        {
+            Content = content;
+        }
     }
 }

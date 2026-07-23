@@ -129,6 +129,45 @@ namespace EasyAbp.SharedResources.ResourceItems
             await Task.CompletedTask;
         }
 
+        protected override Task<ResourceItem> MapToEntityAsync(CreateUpdateResourceItemDto createInput)
+        {
+            var entity = new ResourceItem(
+                GuidGenerator.Create(),
+                createInput.ResourceId,
+                createInput.ResourceItemType,
+                createInput.Name,
+                createInput.Description,
+                createInput.IsPublished,
+                createInput.IsPublic,
+                createInput.DisplayOrder);
+
+            if (createInput.ResourceItemContent != null)
+            {
+                entity.SetResourceItemContent(createInput.ResourceItemContent.Content);
+            }
+
+            return Task.FromResult(entity);
+        }
+
+        protected override Task MapToEntityAsync(CreateUpdateResourceItemDto updateInput, ResourceItem entity)
+        {
+            entity.Update(
+                updateInput.ResourceId,
+                updateInput.ResourceItemType,
+                updateInput.Name,
+                updateInput.Description,
+                updateInput.IsPublished,
+                updateInput.IsPublic,
+                updateInput.DisplayOrder);
+
+            if (updateInput.ResourceItemContent != null)
+            {
+                entity.SetResourceItemContent(updateInput.ResourceItemContent.Content);
+            }
+
+            return Task.CompletedTask;
+        }
+
         public override async Task<ResourceItemDto> CreateAsync(CreateUpdateResourceItemDto input)
         {
             var resource = await _resourceRepository.GetAsync(input.ResourceId);
