@@ -90,12 +90,30 @@ namespace EasyAbp.SharedResources.ResourceUsers
             return await base.GetListAsync(input);
         }
 
+        protected override Task<ResourceUser> MapToEntityAsync(CreateUpdateResourceUserDto createInput)
+        {
+            return Task.FromResult(new ResourceUser(
+                GuidGenerator.Create(),
+                CurrentTenant.Id,
+                createInput.ResourceId,
+                createInput.UserId));
+        }
+
+        protected override Task MapToEntityAsync(CreateUpdateResourceUserDto updateInput, ResourceUser entity)
+        {
+            entity.Update(
+                updateInput.ResourceId,
+                updateInput.UserId);
+
+            return Task.CompletedTask;
+        }
+
         public override async Task<ResourceUserDto> CreateAsync(CreateUpdateResourceUserDto input)
         {
             var resource = await _resourceRepository.GetAsync(input.ResourceId);
-            
+
             await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(resource.CategoryId);
-            
+
             return await base.CreateAsync(input);
         }
 

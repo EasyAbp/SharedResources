@@ -29,5 +29,15 @@ namespace EasyAbp.SharedResources.Categories
             Name = name;
             CustomMark = customMark;
         }
+
+        public void Update(
+            Guid? parentCategoryId,
+            [NotNull] string name,
+            [CanBeNull] string customMark)
+        {
+            ParentCategoryId = parentCategoryId;
+            Name = name;
+            CustomMark = customMark;
+        }
     }
 }

@@ -28,5 +28,13 @@ namespace EasyAbp.SharedResources.ResourceUsers
             ResourceId = resourceId;
             UserId = userId;
         }
+
+        public void Update(
+            Guid resourceId,
+            Guid userId)
+        {
+            ResourceId = resourceId;
+            UserId = userId;
+        }
     }
 }

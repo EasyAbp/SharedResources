@@ -48,5 +48,35 @@ namespace EasyAbp.SharedResources.ResourceItems
             IsPublic = isPublic;
             DisplayOrder = displayOrder;
         }
+
+        public void Update(
+            Guid resourceId,
+            ResourceItemType resourceItemType,
+            string name,
+            string description,
+            bool isPublished,
+            bool isPublic,
+            int displayOrder)
+        {
+            ResourceId = resourceId;
+            ResourceItemType = resourceItemType;
+            Name = name;
+            Description = description;
+            IsPublished = isPublished;
+            IsPublic = isPublic;
+            DisplayOrder = displayOrder;
+        }
+
+        public void SetResourceItemContent(string content)
+        {
+            if (ResourceItemContent == null)
+            {
+                ResourceItemContent = new ResourceItemContent(Id, content);
+            }
+            else
+            {
+                ResourceItemContent.SetContent(content);
+            }
+        }
     }
 }

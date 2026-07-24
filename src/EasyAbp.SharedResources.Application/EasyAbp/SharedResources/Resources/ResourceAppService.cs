@@ -114,10 +114,33 @@ namespace EasyAbp.SharedResources.Resources
             );
         }
 
+        protected override Task<Resource> MapToEntityAsync(CreateUpdateResourceDto createInput)
+        {
+            return Task.FromResult(new Resource(
+                GuidGenerator.Create(),
+                createInput.CategoryId,
+                createInput.Name,
+                createInput.Description,
+                createInput.PreviewMediaResources,
+                createInput.IsPublished));
+        }
+
+        protected override Task MapToEntityAsync(CreateUpdateResourceDto updateInput, Resource entity)
+        {
+            entity.Update(
+                updateInput.CategoryId,
+                updateInput.Name,
+                updateInput.Description,
+                updateInput.PreviewMediaResources,
+                updateInput.IsPublished);
+
+            return Task.CompletedTask;
+        }
+
         public override async Task<ResourceDto> CreateAsync(CreateUpdateResourceDto input)
         {
             await _categoryDataPermissionProvider.CheckCurrentUserAllowedToManageAsync(input.CategoryId);
-            
+
             return await base.CreateAsync(input);
         }
         
